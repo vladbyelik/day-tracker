@@ -447,9 +447,15 @@
           <label>Вставьте текст на французском</label>
           <textarea id="ownFrenchInput" style="min-height:120px;" placeholder="Вставьте сюда свой текст на французском языке..."></textarea>
         </div></div>
-        <div class="save-row"><button class="save-btn" id="ownFrenchBtn" onclick="showOwnFrenchText()">Показать и разобрать</button></div>
+        <div class="save-row">
+          <button class="save-btn small" id="cameraBtn" onclick="document.getElementById('cameraFileInput').click()" style="margin-right:8px;display:none;">📷 Сканировать камерой</button>
+          <button class="save-btn small" id="uploadBtn" onclick="document.getElementById('uploadFileInput').click()" style="margin-right:8px;">🖼 Загрузить картинку</button>
+          <button class="save-btn" id="ownFrenchBtn" onclick="showOwnFrenchText()">Показать и разобрать</button>
+        </div>
+        <input type="file" id="cameraFileInput" accept="image/*" capture="environment" style="display:none" onchange="handleOcrFile(this.files[0], 'cameraBtn')">
+        <input type="file" id="uploadFileInput" accept="image/*" style="display:none" onchange="handleOcrFile(this.files[0], 'uploadBtn')">
         <div class="generated-text" id="ownFrenchTextBox"></div>
-        <div class="hint">Работает так же, как сгенерированный текст — нажимайте на слова для перевода и разбора. Текст сохраняется и подгружается заново при следующем визите.</div>
+        <div class="hint">Можно вставить текст вручную, сфотографировать (на телефоне) или загрузить картинку с текстом — он распознается и попадёт в поле выше для проверки. Работает так же, как сгенерированный текст: нажимайте на слова для перевода и разбора. Сама картинка не сохраняется — только распознанный текст.</div>
       </div>
     </div>
 
@@ -1349,6 +1355,75 @@ async function showOwnFrenchText(){
   }finally{
     btn.disabled = false;
   }
+}
+
+function resizeImageToBase64(file){
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    const reader = new FileReader();
+    reader.onerror = () => reject(new Error('read_failed'));
+    reader.onload = () => {
+      img.onerror = () => reject(new Error('decode_failed'));
+      img.onload = () => {
+        const maxDim = 1600;
+        let { width, height } = img;
+        if(width > maxDim || height > maxDim){
+          const scale = maxDim / Math.max(width, height);
+          width = Math.round(width * scale);
+          height = Math.round(height * scale);
+        }
+        const canvas = document.createElement('canvas');
+        canvas.width = width;
+        canvas.height = height;
+        canvas.getContext('2d').drawImage(img, 0, 0, width, height);
+        const dataUrl = canvas.toDataURL('image/jpeg', 0.85);
+        resolve(dataUrl.split(',')[1]);
+      };
+      img.src = reader.result;
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+async function handleOcrFile(file, btnId){
+  if(!file) return;
+  const btn = document.getElementById(btnId);
+  const originalLabel = btn.textContent;
+  btn.disabled = true;
+  btn.textContent = 'Распознаю…';
+  try{
+    const base64 = await resizeImageToBase64(file);
+    const r = await fetch('/api/ocr-text', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ imageBase64: base64, mediaType: 'image/jpeg' })
+    });
+    const data = await r.json();
+    if(!r.ok){
+      if(data.error === 'no_text_found'){
+        showToast('Текст на фото не распознан', true);
+      } else if(data.error === 'no_api_key'){
+        showToast('Не задан API-ключ Anthropic', true);
+      } else {
+        showToast('Ошибка распознавания: ' + (data.details || data.error || ''), true);
+      }
+      return;
+    }
+    document.getElementById('ownFrenchInput').value = data.text;
+    showToast('Текст распознан ✓ — проверьте и нажмите «Показать и разобрать»');
+  }catch(e){
+    showToast('Не удалось обработать фото', true);
+  }finally{
+    btn.disabled = false;
+    btn.textContent = originalLabel;
+    document.getElementById('cameraFileInput').value = '';
+    document.getElementById('uploadFileInput').value = '';
+  }
+}
+
+const isMobileDevice = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
+if(isMobileDevice){
+  const cameraBtn = document.getElementById('cameraBtn');
+  if(cameraBtn) cameraBtn.style.display = 'inline-block';
 }
 
 loadDictionary().then(() => loadSavedFrenchText('A2'));

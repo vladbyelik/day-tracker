@@ -4,7 +4,7 @@ const path = require('path');
 const { MongoClient } = require('mongodb');
 
 const app = express();
-app.use(express.json());
+app.use(express.json({ limit: '15mb' }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 const DB_PATH = path.join(__dirname, 'db.json');
@@ -219,7 +219,7 @@ app.delete('/api/dictionary', async (req, res) => {
 });
 
 // Генерация текста на французском по теме — раздел "Французский"
-async function callClaude(apiKey, userText, maxTokens) {
+async function callClaude(apiKey, content, maxTokens) {
   const r = await fetch('https://api.anthropic.com/v1/messages', {
     method: 'POST',
     headers: {
@@ -230,7 +230,7 @@ async function callClaude(apiKey, userText, maxTokens) {
     body: JSON.stringify({
       model: 'claude-sonnet-5',
       max_tokens: maxTokens,
-      messages: [{ role: 'user', content: userText }],
+      messages: [{ role: 'user', content }],
     }),
   });
   const data = await r.json();
@@ -341,6 +341,42 @@ app.post('/api/word-info', async (req, res) => {
 });
 
 // Простая проверка, что сервер жив (и на каком хранилище сейчас работает — удобно для диагностики)
+// Распознавание французского текста с фотографии (скан камерой телефона)
+app.post('/api/ocr-text', async (req, res) => {
+  const imageBase64 = req.body.imageBase64;
+  const mediaType = req.body.mediaType || 'image/jpeg';
+  if (!imageBase64) return res.status(400).json({ error: 'no_image' });
+
+  const apiKey = getAnthropicApiKey();
+  if (!apiKey || apiKey === 'PASTE_YOUR_KEY_HERE') {
+    return res.status(500).json({ error: 'no_api_key' });
+  }
+
+  try {
+    const text = await callClaude(
+      apiKey,
+      [
+        { type: 'image', source: { type: 'base64', media_type: mediaType, data: imageBase64 } },
+        {
+          type: 'text',
+          text:
+            'Распознай весь французский текст на этом изображении и выведи его дословно, в том же порядке, сохраняя знаки препинания. ' +
+            'Не добавляй перевод, заголовок или пояснения — выведи только сам распознанный текст на французском. ' +
+            'Если текста на изображении нет или он нечитаем, ответь ровно: НЕТ_ТЕКСТА',
+        },
+      ],
+      1500
+    );
+    if (text.trim() === 'НЕТ_ТЕКСТА') {
+      return res.status(422).json({ error: 'no_text_found' });
+    }
+    res.json({ text: text.trim() });
+  } catch (e) {
+    console.error('Ошибка распознавания фото', e);
+    res.status(500).json({ error: e.isApiError ? 'api_error' : 'generation_failed', details: e.message });
+  }
+});
+
 app.get('/api/ping', async (req, res) => {
   await getMongoCollection().catch(() => null);
   res.json({ ok: true, time: new Date().toISOString(), storage: mongoConnected ? 'mongodb' : 'local-file' });
