@@ -224,9 +224,328 @@
     .chart-wrap{height:240px;}
     .toast{bottom:30px;font-size:14px;padding:12px 24px;}
   }
+  /* ===== Вход ===== */
+  html.auth-locked, html.auth-locked body{overflow:hidden;}
+  .auth-overlay{display:none;position:fixed;inset:0;z-index:300;overflow-y:auto;-webkit-overflow-scrolling:touch;
+    background:
+      radial-gradient(ellipse 700px 460px at 15% -10%, rgba(212,165,101,0.18), transparent 60%),
+      radial-gradient(ellipse 600px 500px at 100% 100%, rgba(132,176,214,0.12), transparent 55%),
+      linear-gradient(180deg, var(--ink) 0%, var(--ink-deep) 100%);
+    padding:max(28px, env(safe-area-inset-top)) 20px max(28px, env(safe-area-inset-bottom));}
+  .auth-overlay.open{display:flex;align-items:center;justify-content:center;}
+  .auth-overlay.dismissable{background:rgba(6,7,14,0.78);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);}
+  .auth-box{width:100%;max-width:380px;margin:auto;}
+  .auth-staff{position:relative;height:34px;margin:0 0 18px;}
+  .auth-staff i{position:absolute;left:0;right:0;height:1px;background:rgba(var(--brass-rgb),0.35);}
+  .auth-staff i:nth-child(1){top:0;} .auth-staff i:nth-child(2){top:8px;} .auth-staff i:nth-child(3){top:16px;} .auth-staff i:nth-child(4){top:24px;} .auth-staff i:nth-child(5){top:32px;}
+  .auth-staff b{position:absolute;top:9px;width:16px;height:11px;border-radius:50%;background:var(--brass);transform:rotate(-18deg);transition:left 0.5s cubic-bezier(.22,.9,.32,1), top 0.5s cubic-bezier(.22,.9,.32,1);}
+  .auth-title{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:28px;letter-spacing:-0.02em;margin:0 0 6px;}
+  .auth-sub{font-size:14.5px;line-height:1.5;color:rgba(245,242,234,0.62);margin:0 0 22px;}
+  .auth-form .field{margin-bottom:14px;}
+  .auth-form input[type=password], .auth-form input[type=text]{width:100%;background:rgba(245,242,234,0.055);border:1px solid rgba(245,242,234,0.13);color:var(--paper);border-radius:13px;padding:12px 14px;font-size:16px;font-family:'Inter',sans-serif;}
+  .auth-form input:focus{outline:none;border-color:rgba(var(--brass-rgb),0.7);background:rgba(245,242,234,0.08);box-shadow:0 0 0 3px rgba(var(--brass-rgb),0.15);}
+  .auth-form .save-btn{width:100%;margin-top:6px;}
+  .auth-form .save-btn:disabled{opacity:0.5;cursor:default;}
+  .auth-err{min-height:20px;font-size:13.5px;color:var(--rose);margin:4px 0 6px;}
+  .auth-links{display:flex;justify-content:space-between;gap:12px;margin-top:18px;}
+  .auth-link{background:none;border:none;padding:0;color:rgba(245,242,234,0.55);font-size:13.5px;font-family:'Inter',sans-serif;cursor:pointer;text-decoration:underline;text-decoration-color:rgba(245,242,234,0.25);text-underline-offset:3px;}
+  .auth-link:hover{color:var(--brass);}
+  .auth-link.danger{color:rgba(var(--rose-rgb),0.85);}
+  .auth-code{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:24px;letter-spacing:0.06em;text-align:center;color:var(--brass);background:rgba(var(--brass-rgb),0.1);border:1px dashed rgba(var(--brass-rgb),0.5);border-radius:14px;padding:16px 10px;margin:0 0 12px;user-select:all;-webkit-user-select:all;word-break:break-all;}
+  .auth-check{display:flex;gap:10px;align-items:flex-start;font-size:14px;line-height:1.45;color:rgba(245,242,234,0.8);margin:14px 0 8px;cursor:pointer;}
+  .auth-check input{margin-top:3px;width:18px;height:18px;accent-color:var(--brass);flex-shrink:0;}
+  .auth-note{font-size:13px;line-height:1.5;color:rgba(245,242,234,0.5);margin:10px 0 0;}
+  .auth-divider{height:1px;background:rgba(245,242,234,0.1);margin:20px 0;}
+  .auth-spinner{width:26px;height:26px;border-radius:50%;border:2.5px solid rgba(var(--brass-rgb),0.25);border-top-color:var(--brass);animation:authSpin 0.9s linear infinite;margin:6px 0 14px;}
+  @keyframes authSpin{to{transform:rotate(360deg);}}
+  .account-btn{position:absolute;top:64px;right:20px;width:30px;height:30px;border-radius:100px;border:1px solid rgba(245,242,234,0.14);background:rgba(245,242,234,0.06);color:rgba(245,242,234,0.65);cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;transition:background 0.15s, color 0.15s;}
+  .account-btn:hover{background:rgba(var(--brass-rgb),0.18);color:var(--brass);}
+  .account-btn svg{width:15px;height:15px;}
+  @media (min-width:900px){ .account-btn{top:78px;right:calc(50% - 430px);} }
 </style>
 </head>
 <body>
+
+<!-- ===== Экран входа (показывается поверх всего, пока браузер не авторизован) ===== -->
+<div class="auth-overlay" id="authOverlay" role="dialog" aria-modal="true" aria-labelledby="authTitle">
+  <div class="auth-box">
+    <div class="auth-staff" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><b id="authNote"></b></div>
+    <h2 class="auth-title" id="authTitle">Партитура дня</h2>
+    <p class="auth-sub" id="authSub"></p>
+    <div id="authBody"></div>
+  </div>
+</div>
+
+<script>
+// ===== Авторизация на клиенте =====
+// Сессия живёт в HttpOnly-cookie (её ставит сервер), JS её не видит.
+// В localStorage храним только флаг «уже входил», чтобы не мигать экраном входа при каждом открытии.
+var Auth = (function(){
+  var HINT_KEY = 'dt_logged_in';
+  var originalFetch = window.fetch.bind(window);
+  var overlay = document.getElementById('authOverlay');
+  var bodyEl = document.getElementById('authBody');
+  var subEl = document.getElementById('authSub');
+  var titleEl = document.getElementById('authTitle');
+  var noteEl = document.getElementById('authNote');
+  var mode = null;
+  var status = null;
+  var retryTimer = null;
+
+  var ERRORS = {
+    invalid_credentials: 'Неверный логин или пароль',
+    too_many_attempts: 'Слишком много попыток. Подождите 15 минут',
+    invalid_code: 'Код не подошёл — проверьте, что переписали его без ошибок',
+    invalid_password: 'Неверный пароль',
+    weak_password: 'Пароль — минимум 8 символов',
+    bad_login: 'Логин — от 3 до 40 символов',
+    already_configured: 'Аккаунт уже создан — войдите',
+    storage_unavailable: 'База данных сейчас недоступна, попробуйте через минуту',
+    mismatch: 'Пароли не совпадают',
+    network: 'Нет связи с сервером'
+  };
+
+  function getHint(){ try{ return localStorage.getItem(HINT_KEY) === '1'; }catch(e){ return false; } }
+  function setHint(on){ try{ if(on) localStorage.setItem(HINT_KEY, '1'); else localStorage.removeItem(HINT_KEY); }catch(e){} }
+
+  // Любой запрос к /api (кроме /api/auth и /api/ping), получивший 401, открывает экран входа.
+  // Сам запрос «зависает» — чтобы остальной код не показывал ошибки; после входа страница перезагрузится.
+  window.fetch = function(input, init){
+    var url = typeof input === 'string' ? input : ((input && input.url) || '');
+    var path = url.indexOf(location.origin) === 0 ? url.slice(location.origin.length) : url;
+    var guarded = path.indexOf('/api/') === 0 && path.indexOf('/api/auth/') !== 0 && path.indexOf('/api/ping') !== 0;
+    return originalFetch(input, init).then(function(r){
+      if(guarded && r.status === 401){
+        setHint(false);
+        if(mode !== 'login' && mode !== 'recover' && mode !== 'setup') show(status && status.configured === false ? 'setup' : 'login');
+        return new Promise(function(){});
+      }
+      return r;
+    });
+  };
+
+  function api(path, body){
+    return originalFetch('/api/auth/' + path, {
+      method: body ? 'POST' : 'GET',
+      headers: body ? {'Content-Type':'application/json'} : undefined,
+      body: body ? JSON.stringify(body) : undefined,
+      credentials: 'same-origin'
+    }).then(function(r){
+      return r.json().catch(function(){ return {}; }).then(function(data){ data._status = r.status; data._ok = r.ok; return data; });
+    });
+  }
+
+  function esc(s){ return String(s == null ? '' : s).replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+
+  // Нота на нотном стане «поднимается» на каждом шаге — маленькая деталь в духе названия
+  var NOTE_POS = { checking:[12,21], setup:[30,13], login:[46,9], recover:[62,17], code:[78,1], account:[46,9] };
+  function moveNote(m){ var p = NOTE_POS[m] || [46,9]; noteEl.style.left = p[0] + '%'; noteEl.style.top = p[1] + 'px'; }
+
+  function open(){
+    overlay.classList.add('open');
+    document.documentElement.classList.add('auth-locked');
+  }
+  function close(){
+    overlay.classList.remove('open', 'dismissable');
+    document.documentElement.classList.remove('auth-locked');
+    mode = null;
+  }
+
+  function field(id, label, type, autocomplete, extra){
+    return '<div class="field"><label for="' + id + '">' + label + '</label>' +
+      '<input id="' + id + '" type="' + type + '" autocomplete="' + autocomplete + '" autocapitalize="none" autocorrect="off" spellcheck="false" ' + (extra || '') + '></div>';
+  }
+
+  function show(m, extra){
+    mode = m;
+    clearTimeout(retryTimer);
+    overlay.classList.toggle('dismissable', m === 'account' || (m === 'code' && extra && extra.fromAccount));
+    moveNote(m);
+    open();
+    var h = '';
+
+    if(m === 'checking'){
+      titleEl.textContent = 'Партитура дня';
+      subEl.textContent = (extra && extra.offline) ? 'Сервер пока не отвечает — повторяю попытку…' : 'Подключаюсь к серверу. Если он спал, это займёт до минуты.';
+      h = '<div class="auth-spinner" aria-label="Загрузка"></div>';
+    }
+
+    if(m === 'setup'){
+      titleEl.textContent = 'Первый вход';
+      subEl.textContent = 'Придумайте логин и пароль — дальше они будут вашими. Вводить их нужно один раз на каждом устройстве.';
+      h = '<form class="auth-form" id="authForm" novalidate>' +
+        field('authLogin', 'Логин', 'text', 'username', 'required minlength="3" maxlength="40"') +
+        field('authPass', 'Пароль (от 8 символов)', 'password', 'new-password', 'required minlength="8"') +
+        field('authPass2', 'Пароль ещё раз', 'password', 'new-password', 'required') +
+        '<div class="auth-err" id="authErr"></div>' +
+        '<button class="save-btn" type="submit">Создать и войти</button>' +
+        '</form>';
+    }
+
+    if(m === 'login'){
+      titleEl.textContent = 'Вход';
+      subEl.textContent = 'Этот браузер запомнит вас — повторно вводить не придётся.';
+      h = '<form class="auth-form" id="authForm" novalidate>' +
+        field('authLogin', 'Логин', 'text', 'username', 'required') +
+        field('authPass', 'Пароль', 'password', 'current-password', 'required') +
+        '<div class="auth-err" id="authErr"></div>' +
+        '<button class="save-btn" type="submit">Войти</button>' +
+        '</form>' +
+        '<div class="auth-links"><button class="auth-link" type="button" data-go="recover">Забыли пароль?</button></div>';
+    }
+
+    if(m === 'recover'){
+      titleEl.textContent = 'Восстановление';
+      subEl.textContent = 'Введите код восстановления, который вы сохранили при создании аккаунта, и задайте новые логин и пароль.';
+      h = '<form class="auth-form" id="authForm" novalidate>' +
+        field('authCode', 'Код восстановления', 'text', 'one-time-code', 'placeholder="XXXX-XXXX-XXXX-XXXX" required') +
+        field('authLogin', 'Логин (можно прежний)', 'text', 'username', 'required minlength="3" maxlength="40"') +
+        field('authPass', 'Новый пароль (от 8 символов)', 'password', 'new-password', 'required minlength="8"') +
+        field('authPass2', 'Новый пароль ещё раз', 'password', 'new-password', 'required') +
+        '<div class="auth-err" id="authErr"></div>' +
+        '<button class="save-btn" type="submit">Сменить и войти</button>' +
+        '</form>' +
+        '<p class="auth-note">Все остальные устройства будут разлогинены, старый код перестанет работать — вы получите новый.</p>' +
+        '<div class="auth-links"><button class="auth-link" type="button" data-go="login">← Назад ко входу</button></div>';
+    }
+
+    if(m === 'code'){
+      titleEl.textContent = 'Код восстановления';
+      subEl.textContent = 'Это единственный способ вернуть доступ, если забудете пароль. Он показывается только сейчас.';
+      h = '<div class="auth-code" id="authCodeText">' + esc(extra.code) + '</div>' +
+        '<form class="auth-form" id="authForm" novalidate>' +
+        '<button class="save-btn small" type="button" id="authCopy" style="width:auto;margin-top:0;">Скопировать</button>' +
+        '<p class="auth-note">Сохраните его в Заметки, менеджер паролей (рядом с паролем от этого сайта) или сфотографируйте. Кроме вас, его никто не знает — на сервере хранится только хэш.</p>' +
+        '<label class="auth-check"><input type="checkbox" id="authSaved"> Я сохранил код в надёжном месте</label>' +
+        '<button class="save-btn" type="submit" id="authDone" disabled>Продолжить</button>' +
+        '</form>';
+    }
+
+    if(m === 'account'){
+      titleEl.textContent = 'Аккаунт';
+      subEl.innerHTML = 'Вы вошли как <b>' + esc(status && status.login) + '</b>' +
+        (status && status.sessions > 1 ? '. Активных устройств: ' + status.sessions : '') + '.';
+      h = '<form class="auth-form" id="authForm" novalidate>' +
+        '<input type="text" autocomplete="username" value="' + esc(status && status.login) + '" style="display:none" readonly>' +
+        field('authPass', 'Текущий пароль — чтобы выпустить новый код восстановления', 'password', 'current-password', 'required') +
+        '<div class="auth-err" id="authErr"></div>' +
+        '<button class="save-btn" type="submit">Новый код восстановления</button>' +
+        '</form>' +
+        '<div class="auth-divider"></div>' +
+        '<div class="auth-links">' +
+          '<button class="auth-link" type="button" data-action="logout">Выйти</button>' +
+          '<button class="auth-link danger" type="button" data-action="logout-all">Выйти на всех устройствах</button>' +
+        '</div>' +
+        '<div class="auth-links"><button class="auth-link" type="button" data-action="close">Закрыть</button></div>';
+    }
+
+    bodyEl.innerHTML = h;
+    wire(m, extra);
+  }
+
+  function val(id){ var el = document.getElementById(id); return el ? el.value : ''; }
+  function setErr(code){ var el = document.getElementById('authErr'); if(el) el.textContent = code ? (ERRORS[code] || ('Ошибка: ' + code)) : ''; }
+  function busy(on){ var b = bodyEl.querySelector('button[type=submit]'); if(b){ b.disabled = on; } }
+
+  function wire(m, extra){
+    var form = document.getElementById('authForm');
+    var first = bodyEl.querySelector('input:not([readonly])');
+    if(first && !('ontouchstart' in window)) setTimeout(function(){ first.focus(); }, 50);
+
+    bodyEl.querySelectorAll('[data-go]').forEach(function(b){ b.addEventListener('click', function(){ show(b.getAttribute('data-go')); }); });
+    bodyEl.querySelectorAll('[data-action]').forEach(function(b){
+      b.addEventListener('click', function(){
+        var a = b.getAttribute('data-action');
+        if(a === 'close') return close();
+        if(a === 'logout-all' && !confirm('Выйти на всех устройствах? Везде придётся войти заново.')) return;
+        api('logout', { all: a === 'logout-all' }).then(function(){ setHint(false); location.reload(); });
+      });
+    });
+
+    if(m === 'code'){
+      var saved = document.getElementById('authSaved');
+      var done = document.getElementById('authDone');
+      saved.addEventListener('change', function(){ done.disabled = !saved.checked; });
+      document.getElementById('authCopy').addEventListener('click', function(){
+        var btn = this;
+        var text = extra.code;
+        var ok = function(){ btn.textContent = 'Скопировано ✓'; };
+        if(navigator.clipboard && navigator.clipboard.writeText){
+          navigator.clipboard.writeText(text).then(ok, function(){ selectCode(); });
+        } else { selectCode(); }
+      });
+    }
+
+    if(!form) return;
+    form.addEventListener('submit', function(e){
+      e.preventDefault();
+      setErr('');
+      if(m === 'code'){ setHint(true); if(extra.fromAccount) return close(); return location.reload(); }
+
+      if((m === 'setup' || m === 'recover') && val('authPass') !== val('authPass2')) return setErr('mismatch');
+
+      var req;
+      if(m === 'setup') req = api('setup', { login: val('authLogin'), password: val('authPass') });
+      if(m === 'login') req = api('login', { login: val('authLogin'), password: val('authPass') });
+      if(m === 'recover') req = api('recover', { recoveryCode: val('authCode'), login: val('authLogin'), password: val('authPass') });
+      if(m === 'account') req = api('recovery-code', { password: val('authPass') });
+      if(!req) return;
+
+      busy(true);
+      req.then(function(d){
+        busy(false);
+        if(!d._ok){
+          if(d.error === 'already_configured'){ status = { configured: true }; return show('login'); }
+          return setErr(d.error || 'network');
+        }
+        if(m === 'login'){ setHint(true); return location.reload(); }
+        show('code', { code: d.recoveryCode, fromAccount: m === 'account' });
+      }, function(){ busy(false); setErr('network'); });
+    });
+  }
+
+  function selectCode(){
+    var el = document.getElementById('authCodeText');
+    var range = document.createRange(); range.selectNodeContents(el);
+    var sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(range);
+    try{ document.execCommand('copy'); document.getElementById('authCopy').textContent = 'Скопировано ✓'; }catch(e){}
+  }
+
+  function checkStatus(){
+    api('status').then(function(d){
+      if(!d._ok){
+        // База недоступна (503) — показываем ожидание и повторяем
+        if(!getHint() || mode === 'checking'){ show('checking', { offline: true }); }
+        retryTimer = setTimeout(checkStatus, 5000);
+        return;
+      }
+      status = d;
+      if(d.loggedIn){
+        setHint(true);
+        if(mode === 'checking') close();
+        return;
+      }
+      setHint(false);
+      show(d.configured ? 'login' : 'setup');
+    }, function(){
+      // Сеть недоступна или сервер просыпается — если человек уже входил, не мешаем, иначе ждём
+      if(!getHint() || mode === 'checking') show('checking', { offline: true });
+      retryTimer = setTimeout(checkStatus, 5000);
+    });
+  }
+
+  // Если в этом браузере ещё не входили — сразу закрываем экран, чтобы не мелькал пустой интерфейс
+  if(!getHint()) show('checking');
+  checkStatus();
+
+  return {
+    openAccount: function(){
+      if(status && status.loggedIn) return show('account');
+      api('status').then(function(d){ status = d; show(d.loggedIn ? 'account' : (d.configured ? 'login' : 'setup')); });
+    }
+  };
+})();
+</script>
 
 <header>
   <div class="brand-row">
@@ -275,6 +594,9 @@
     <h1>Партитура дня</h1>
   </div>
   <div class="status" id="connStatus">…</div>
+  <button class="account-btn" id="accountBtn" type="button" onclick="Auth.openAccount()" aria-label="Аккаунт" title="Аккаунт">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+  </button>
 </header>
 
 <div class="date-bar">

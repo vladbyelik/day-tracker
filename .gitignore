@@ -4,3 +4,4 @@ db.json
 migrate-to-mongodb.js
 files.zip
 start-server.bat
+auth.json
