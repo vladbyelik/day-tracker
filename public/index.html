@@ -407,6 +407,7 @@
   <div class="view" id="view-french">
     <div class="subtabs">
       <button class="subtab-btn active" data-subtab="text" onclick="switchFrenchSubtab('text')">Текст для чтения</button>
+      <button class="subtab-btn" data-subtab="own" onclick="switchFrenchSubtab('own')">Свой текст</button>
       <button class="subtab-btn" data-subtab="dict" onclick="switchFrenchSubtab('dict')">Словарь</button>
     </div>
 
@@ -436,6 +437,19 @@
         <div class="save-row"><button class="save-btn" id="frenchGenBtn" onclick="generateFrenchText()">Сгенерировать текст</button></div>
         <div class="generated-text" id="frenchTextBox"></div>
         <div class="hint">Нажимайте на слова в тексте — появится перевод, транскрипция и разбор грамматики. Последний сгенерированный текст каждого уровня сохраняется и подгружается заново без обращения к AI.</div>
+      </div>
+    </div>
+
+    <div class="subtab-view" id="frenchSub-own">
+      <div class="card">
+        <h2>Свой текст</h2>
+        <div class="row"><div class="field">
+          <label>Вставьте текст на французском</label>
+          <textarea id="ownFrenchInput" style="min-height:120px;" placeholder="Вставьте сюда свой текст на французском языке..."></textarea>
+        </div></div>
+        <div class="save-row"><button class="save-btn" id="ownFrenchBtn" onclick="showOwnFrenchText()">Показать и разобрать</button></div>
+        <div class="generated-text" id="ownFrenchTextBox"></div>
+        <div class="hint">Работает так же, как сгенерированный текст — нажимайте на слова для перевода и разбора. Текст сохраняется и подгружается заново при следующем визите.</div>
       </div>
     </div>
 
@@ -836,6 +850,7 @@ function splitIntoSentences(text){
 
 // Разбиваем текст на слова/пунктуацию, оборачиваем слова в кликабельные span'ы
 let currentFrenchText = '';
+let currentFrenchBoxId = '';
 
 function findDictionaryEntry(word){
   const norm = word.trim().toLowerCase();
@@ -857,6 +872,7 @@ function handleWordClick(span){
 
 function renderClickableText(box, text){
   currentFrenchText = text;
+  currentFrenchBoxId = box.id;
   box.innerHTML = '';
   const sentences = splitIntoSentences(text);
   sentences.forEach(sentence => {
@@ -978,9 +994,9 @@ async function deleteDictionaryEntry(key, wordLabel){
     if(!r.ok) throw new Error();
     showToast('Удалено из словаря');
     await loadDictionary();
-    if(currentFrenchText){
-      const box = document.getElementById('frenchTextBox');
-      if(box.style.display !== 'none') renderClickableText(box, currentFrenchText);
+    if(currentFrenchText && currentFrenchBoxId){
+      const box = document.getElementById(currentFrenchBoxId);
+      if(box && box.style.display !== 'none') renderClickableText(box, currentFrenchText);
     }
   }catch(e){ showToast('Не удалось удалить слово', true); }
 }
@@ -988,8 +1004,10 @@ async function deleteDictionaryEntry(key, wordLabel){
 function switchFrenchSubtab(name){
   document.querySelectorAll('.subtab-btn').forEach(b => b.classList.toggle('active', b.dataset.subtab === name));
   document.getElementById('frenchSub-text').classList.toggle('active', name === 'text');
+  document.getElementById('frenchSub-own').classList.toggle('active', name === 'own');
   document.getElementById('frenchSub-dict').classList.toggle('active', name === 'dict');
   if(name === 'dict') loadDictionary();
+  if(name === 'own') loadOwnFrenchText();
 }
 
 function closeWordPanel(){
@@ -1013,9 +1031,9 @@ async function addToDictionary(){
     btn.classList.add('saved');
     showToast(data.duplicate ? 'Уже было в словаре' : 'Добавлено в словарь ✓');
     await loadDictionary();
-    if(currentFrenchText){
-      const box = document.getElementById('frenchTextBox');
-      if(box.style.display !== 'none') renderClickableText(box, currentFrenchText);
+    if(currentFrenchText && currentFrenchBoxId){
+      const box = document.getElementById(currentFrenchBoxId);
+      if(box && box.style.display !== 'none') renderClickableText(box, currentFrenchText);
     }
   }catch(e){
     btn.disabled = false;
@@ -1295,6 +1313,44 @@ async function deleteSavedTopic(){
 loadDay(selectedDate);
 loadSobriety();
 setInterval(loadSobriety, 60000);
+async function loadOwnFrenchText(){
+  const box = document.getElementById('ownFrenchTextBox');
+  try{
+    const r = await fetch('/api/french-custom-text');
+    const data = await r.json();
+    if(data && data.text){
+      document.getElementById('ownFrenchInput').value = data.text;
+      box.style.display = 'block';
+      renderClickableText(box, data.text);
+    } else {
+      box.style.display = 'none';
+      box.innerHTML = '';
+    }
+  }catch(e){ /* нет связи — просто оставляем пусто */ }
+}
+
+async function showOwnFrenchText(){
+  const text = document.getElementById('ownFrenchInput').value.trim();
+  if(!text){ showToast('Вставьте текст', true); return; }
+  const box = document.getElementById('ownFrenchTextBox');
+  const btn = document.getElementById('ownFrenchBtn');
+  btn.disabled = true;
+  try{
+    const r = await fetch('/api/french-custom-text', {
+      method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({text})
+    });
+    if(!r.ok) throw new Error();
+    box.style.display = 'block';
+    renderClickableText(box, text);
+    closeWordPanel();
+    showToast('Текст сохранён ✓');
+  }catch(e){
+    showToast('Не удалось сохранить текст — проверьте связь с сервером', true);
+  }finally{
+    btn.disabled = false;
+  }
+}
+
 loadDictionary().then(() => loadSavedFrenchText('A2'));
 loadSavedTopics();
 </script>
