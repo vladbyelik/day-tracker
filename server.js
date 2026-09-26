@@ -689,6 +689,188 @@ app.post('/api/word-info', async (req, res) => {
   }
 });
 
+// =====================================================================
+// ===== Тренировка слов: интервальные повторения, статистика, «слова дня», тексты из своих слов =====
+// =====================================================================
+// Всё хранится в db.practice: { cards: {ключ: состояние}, log: {дата: счётчики}, life: {дата: [...]}, settings }
+// Ключ карточки: "слово|fr2ru" или "слово|ru2fr" (слово в нижнем регистре).
+
+const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
+const PRACTICE_KINDS = ['cards', 'text', 'conj', 'listen', 'match'];
+
+function practiceOf(db) {
+  db.practice = db.practice || {};
+  db.practice.cards = db.practice.cards || {};
+  db.practice.log = db.practice.log || {};
+  db.practice.life = db.practice.life || {};
+  db.practice.settings = db.practice.settings || { newPerDay: 10 };
+  return db.practice;
+}
+
+// Дата приходит от браузера (локальная дата пользователя), чтобы «сегодня» совпадало с Парижем, а не с UTC сервера
+function clientDate(value) {
+  return DATE_RE.test(String(value || '')) ? value : new Date().toISOString().slice(0, 10);
+}
+
+function addDaysStr(dateStr, delta) {
+  const d = new Date(dateStr + 'T00:00:00Z');
+  d.setUTCDate(d.getUTCDate() + delta);
+  return d.toISOString().slice(0, 10);
+}
+
+// Ключи становятся именами полей в MongoDB — точки и $ там нежелательны
+function safeCardKey(key) {
+  return String(key || '').toLowerCase().replace(/[.$]/g, '_').slice(0, 120);
+}
+
+function logEntry(practice, date) {
+  practice.log[date] = practice.log[date] || {};
+  return practice.log[date];
+}
+
+// Упрощённый SM-2. grade: again | hard | good | easy
+function scheduleCard(card, grade, today) {
+  const c = Object.assign({ reps: 0, ease: 2.5, interval: 0, lapses: 0 }, card || {});
+  const isNew = !c.firstSeen;
+  if (isNew) c.firstSeen = today;
+
+  if (grade === 'again') {
+    c.lapses += 1;
+    c.reps = 0;
+    c.ease = Math.max(1.3, c.ease - 0.2);
+    c.interval = 1;
+  } else if (grade === 'hard') {
+    c.interval = c.reps === 0 ? 1 : Math.max(c.interval + 1, Math.round(c.interval * 1.2));
+    c.ease = Math.max(1.3, c.ease - 0.15);
+    c.reps += 1;
+  } else if (grade === 'easy') {
+    c.interval = c.reps === 0 ? 4 : Math.round(Math.max(c.interval, 1) * c.ease * 1.3);
+    c.ease = Math.min(3.2, c.ease + 0.15);
+    c.reps += 1;
+  } else {
+    c.interval = c.reps === 0 ? 1 : c.reps === 1 ? 3 : Math.round(Math.max(c.interval, 1) * c.ease);
+    c.reps += 1;
+  }
+  c.interval = Math.min(365, Math.max(1, c.interval));
+  c.due = addDaysStr(today, c.interval);
+  c.lastReviewed = today;
+  return { card: c, isNew };
+}
+
+app.get('/api/practice', async (req, res) => {
+  const db = await readDB();
+  const p = practiceOf(db);
+  res.json({ cards: p.cards, log: p.log, life: p.life, settings: p.settings, practiceText: db.practiceText || null });
+});
+
+app.post('/api/practice/review', async (req, res) => {
+  const key = safeCardKey(req.body.key);
+  const grade = ['again', 'hard', 'good', 'easy'].includes(req.body.grade) ? req.body.grade : null;
+  if (!key || !grade) return res.status(400).json({ error: 'bad_request' });
+  const today = clientDate(req.body.today);
+  const db = await readDB();
+  const p = practiceOf(db);
+  const { card, isNew } = scheduleCard(p.cards[key], grade, today);
+  p.cards[key] = card;
+  const log = logEntry(p, today);
+  log.cards = (log.cards || 0) + 1;
+  if (grade !== 'again') log.cardsCorrect = (log.cardsCorrect || 0) + 1;
+  if (isNew && key.endsWith('|fr2ru')) log.newWords = (log.newWords || 0) + 1;
+  await writeDB(db);
+  res.json({ ok: true, card });
+});
+
+// Статистика остальных режимов (текст с пропусками, спряжения, на слух, пары)
+app.post('/api/practice/log', async (req, res) => {
+  const kind = req.body.kind;
+  if (!PRACTICE_KINDS.includes(kind) || kind === 'cards') return res.status(400).json({ error: 'bad_kind' });
+  const total = Math.max(0, Math.min(500, parseInt(req.body.total) || 0));
+  const correct = Math.max(0, Math.min(total, parseInt(req.body.correct) || 0));
+  const today = clientDate(req.body.today);
+  const db = await readDB();
+  const p = practiceOf(db);
+  const log = logEntry(p, today);
+  log[kind] = (log[kind] || 0) + total;
+  log[kind + 'Correct'] = (log[kind + 'Correct'] || 0) + correct;
+  const timeMs = parseInt(req.body.timeMs);
+  let newRecord = false;
+  // Для «Пар»: время уже включает штраф за ошибки, рекорд — наименьшее время
+  if (kind === 'match' && timeMs > 0) {
+    if (!p.settings.bestMatchMs || timeMs < p.settings.bestMatchMs) {
+      p.settings.bestMatchMs = timeMs;
+      newRecord = true;
+    }
+  }
+  await writeDB(db);
+  res.json({ ok: true, newRecord, bestMatchMs: p.settings.bestMatchMs || null });
+});
+
+app.post('/api/practice/settings', async (req, res) => {
+  const db = await readDB();
+  const p = practiceOf(db);
+  const n = parseInt(req.body.newPerDay);
+  if ([0, 5, 10, 15, 20, 30].includes(n)) p.settings.newPerDay = n;
+  await writeDB(db);
+  res.json({ ok: true, settings: p.settings });
+});
+
+// «Слова дня»: 2–3 слова, которые нужно применить в реальном разговоре
+app.post('/api/practice/life', async (req, res) => {
+  const today = clientDate(req.body.today);
+  const words = Array.isArray(req.body.words) ? req.body.words.slice(0, 5) : [];
+  const db = await readDB();
+  const p = practiceOf(db);
+  p.life[today] = words.map((w) => ({ word: String(w).slice(0, 80), done: false }));
+  await writeDB(db);
+  res.json({ ok: true, life: p.life[today] });
+});
+
+app.post('/api/practice/life/toggle', async (req, res) => {
+  const today = clientDate(req.body.today);
+  const word = String(req.body.word || '');
+  const db = await readDB();
+  const p = practiceOf(db);
+  const list = p.life[today] || [];
+  const item = list.find((x) => x.word === word);
+  if (item) item.done = !!req.body.done;
+  await writeDB(db);
+  res.json({ ok: true, life: list });
+});
+
+// Короткий текст, в котором обязательно встречаются слова «на повторение».
+// Слова в тексте размечены как **форма|исходное_слово** — по разметке фронтенд делает подсветку и пропуски.
+app.post('/api/practice-text', async (req, res) => {
+  const level = VALID_LEVELS.includes(req.body.level) ? req.body.level : 'A2';
+  const words = (Array.isArray(req.body.words) ? req.body.words : [])
+    .map((w) => ({ word: String((w && w.word) || '').trim().slice(0, 60), translation: String((w && w.translation) || '').slice(0, 80) }))
+    .filter((w) => w.word)
+    .slice(0, 12);
+  if (words.length < 2) return res.status(400).json({ error: 'not_enough_words' });
+
+  const apiKey = getAnthropicApiKey();
+  if (!apiKey || apiKey === 'PASTE_YOUR_KEY_HERE') return res.status(500).json({ error: 'no_api_key' });
+
+  const list = words.map((w) => '- ' + w.word + (w.translation ? ' (' + w.translation + ')' : '')).join('\n');
+  const prompt =
+    'Напиши связный короткий текст на французском языке ' + LEVEL_GUIDANCE[level] + '. Объём — 150–200 слов.\n' +
+    'В тексте ОБЯЗАТЕЛЬНО должно встретиться каждое слово из списка (можно в другой грамматической форме, по смыслу как в переводе):\n' +
+    list + '\n\n' +
+    'Каждое вхождение слова из списка размечай строго так: **форма_в_тексте|слово_из_списка** — например **allons|aller** или **maison|maison**. ' +
+    'Внутри звёздочек — только одно слово или неразрывная форма (например **suis allé|aller** допустимо для сложного времени). ' +
+    'Другие слова не размечай. Не добавляй заголовок, перевод или пояснения — выведи только сам текст.';
+
+  try {
+    const text = (await callClaude(apiKey, prompt, 1000)).trim();
+    const db = await readDB();
+    db.practiceText = { text, level, words, generatedAt: new Date().toISOString() };
+    await writeDB(db);
+    res.json(db.practiceText);
+  } catch (e) {
+    console.error('Ошибка генерации текста для тренировки', e);
+    res.status(500).json({ error: e.isApiError ? 'api_error' : 'generation_failed', details: e.message });
+  }
+});
+
 // Простая проверка, что сервер жив (и на каком хранилище сейчас работает — удобно для диагностики)
 // Распознавание французского текста с фотографии (скан камерой телефона)
 app.post('/api/ocr-text', async (req, res) => {

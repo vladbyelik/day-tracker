@@ -262,6 +262,117 @@
   .account-btn:hover{background:rgba(var(--brass-rgb),0.18);color:var(--brass);}
   .account-btn svg{width:15px;height:15px;}
   @media (min-width:900px){ .account-btn{top:78px;right:calc(50% - 430px);} }
+  /* ===== Тренировка слов ===== */
+  .subtab-btn{white-space:nowrap;padding:9px 8px;}
+  .speak-btn{background:rgba(245,242,234,0.07);border:1px solid rgba(245,242,234,0.12);border-radius:100px;width:30px;height:30px;font-size:14px;line-height:1;cursor:pointer;vertical-align:middle;padding:0;transition:background 0.15s, transform 0.15s;}
+  .speak-btn:hover{background:rgba(var(--brass-rgb),0.2);}
+  .speak-btn:active{transform:scale(0.9);}
+  .word-panel .wp-word .speak-btn{width:28px;height:28px;font-size:13px;margin-left:6px;}
+  .ghost-btn{padding:10px 16px;border-radius:100px;border:1px solid rgba(245,242,234,0.18);background:rgba(245,242,234,0.04);color:var(--paper);font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:13px;cursor:pointer;transition:background 0.15s, transform 0.15s;}
+  .ghost-btn:hover{background:rgba(245,242,234,0.1);}
+  .ghost-btn:active{transform:scale(0.96);}
+  .ghost-btn:disabled{opacity:0.4;cursor:default;}
+  .ghost-btn.on{background:rgba(var(--brass-rgb),0.2);border-color:rgba(var(--brass-rgb),0.6);color:var(--brass);}
+  .btn-row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:12px;}
+  .btn-row.end{justify-content:flex-end;}
+  .btn-row .save-btn, .btn-row .save-btn.small{margin-top:0;}
+
+  .pr-stats{display:grid;grid-template-columns:repeat(2, 1fr);gap:10px;margin-bottom:14px;}
+  .pr-stat{background:rgba(245,242,234,0.045);border:1px solid rgba(245,242,234,0.08);border-radius:16px;padding:12px 14px;}
+  .pr-stat .num{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:26px;line-height:1.1;letter-spacing:-0.02em;}
+  .pr-stat .lbl{font-size:12px;color:rgba(245,242,234,0.55);margin-top:3px;}
+  .pr-stat.hot .num{color:var(--brass);}
+  .pr-stat.good .num{color:var(--sage);}
+  .pr-chart{height:120px;}
+  .pr-settings{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:14px;font-size:13px;color:rgba(245,242,234,0.65);}
+  .pr-settings select{width:auto;padding:6px 10px;font-size:13px;}
+  .pr-toggle{display:flex;align-items:center;gap:6px;cursor:pointer;margin-left:auto;}
+  .pr-toggle input{accent-color:var(--brass);width:16px;height:16px;}
+
+  .pr-modes{display:grid;grid-template-columns:repeat(2, 1fr);gap:10px;}
+  .pr-mode{text-align:left;background:rgba(245,242,234,0.045);border:1px solid rgba(245,242,234,0.1);border-radius:16px;padding:13px 14px;color:var(--paper);cursor:pointer;font-family:'Inter',sans-serif;transition:background 0.15s, border-color 0.15s, transform 0.15s;display:flex;flex-direction:column;gap:4px;min-height:92px;}
+  .pr-mode:hover{background:rgba(245,242,234,0.08);}
+  .pr-mode:active{transform:scale(0.97);}
+  .pr-mode.active{border-color:rgba(var(--brass-rgb),0.7);background:rgba(var(--brass-rgb),0.1);}
+  .pr-mode .t{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:14.5px;}
+  .pr-mode .d{font-size:12px;line-height:1.4;color:rgba(245,242,234,0.55);}
+  .pr-mode .b{margin-top:auto;font-size:11.5px;font-weight:600;color:var(--brass);}
+  .pr-mode .b.ok{color:var(--sage);}
+
+  .pr-stage h2{justify-content:space-between;}
+  .pr-stage::after{display:none;}
+  .pr-stage{overflow-x:clip;}
+  .pr-close{background:rgba(245,242,234,0.08);border:none;color:rgba(245,242,234,0.6);cursor:pointer;font-size:14px;padding:6px 10px;border-radius:100px;}
+  .pr-progress{height:4px;background:rgba(245,242,234,0.08);border-radius:4px;overflow:hidden;margin:-6px 0 16px;}
+  .pr-progress i{display:block;height:100%;background:var(--brass);border-radius:4px;transition:width 0.3s ease;}
+  .fc-meta{display:flex;justify-content:space-between;font-size:12px;color:rgba(245,242,234,0.5);margin-bottom:10px;}
+  .fc-dir{font-weight:600;color:var(--steel);}
+  .fc-prompt{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+  .fc-word{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:30px;letter-spacing:-0.02em;line-height:1.15;word-break:break-word;}
+  .fc-sub{font-size:13px;color:rgba(245,242,234,0.5);margin-top:4px;}
+  .fc-context{margin-top:12px;padding:10px 12px;border-left:2px solid rgba(var(--brass-rgb),0.5);background:rgba(245,242,234,0.035);border-radius:0 10px 10px 0;font-size:14px;line-height:1.55;color:rgba(245,242,234,0.8);}
+  .fc-context b{color:var(--brass);font-weight:600;}
+  .fc-input{margin-top:16px;}
+  .fc-input input{font-size:17px !important;padding:13px 15px !important;}
+  .fc-result{margin-top:14px;padding:12px 14px;border-radius:14px;font-size:14px;line-height:1.5;}
+  .fc-result.ok{background:rgba(var(--sage-rgb),0.14);color:var(--sage);}
+  .fc-result.almost{background:rgba(var(--brass-rgb),0.14);color:var(--brass);}
+  .fc-result.bad{background:rgba(var(--rose-rgb),0.14);color:var(--rose);}
+  .fc-result .ans{display:block;margin-top:4px;color:var(--paper);font-weight:600;font-size:16px;}
+  .fc-details{margin-top:12px;font-size:13.5px;line-height:1.55;color:rgba(245,242,234,0.75);}
+  .grade-row{display:grid;grid-template-columns:repeat(3, 1fr);gap:8px;margin-top:16px;}
+  .grade-row.two{grid-template-columns:1fr 1fr;}
+  .grade-btn{padding:12px 6px;border-radius:14px;border:1px solid rgba(245,242,234,0.14);background:rgba(245,242,234,0.05);color:var(--paper);font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:13.5px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px;transition:transform 0.15s, background 0.15s;}
+  .grade-btn small{font-family:'Inter',sans-serif;font-weight:500;font-size:11px;opacity:0.6;}
+  .grade-btn:active{transform:scale(0.96);}
+  .grade-btn.primary{background:var(--brass);border-color:var(--brass);color:var(--ink-deep);}
+  .grade-btn.again.primary{background:var(--rose);border-color:var(--rose);}
+  .pr-summary{text-align:center;padding:10px 0 4px;}
+  .pr-summary .big{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:44px;letter-spacing:-0.02em;color:var(--brass);line-height:1;}
+  .pr-summary p{font-size:14px;color:rgba(245,242,234,0.7);line-height:1.55;margin:10px 0 0;}
+
+  .pr-chips{display:flex;flex-wrap:wrap;gap:6px;margin:4px 0 12px;}
+  .pr-chip{font-size:12.5px;padding:4px 10px;border-radius:100px;background:rgba(var(--steel-rgb),0.14);color:var(--steel);}
+  .fr-word.target{background:rgba(var(--steel-rgb),0.2);border-bottom:1.5px solid var(--steel);font-weight:600;}
+  .fr-word.target.known{background:rgba(var(--steel-rgb),0.2);}
+  .cloze-input{display:inline-block;min-width:60px;max-width:100%;padding:2px 8px !important;margin:0 2px;font-size:14.5px !important;border-radius:8px !important;border:1px dashed rgba(var(--steel-rgb),0.7) !important;background:rgba(var(--steel-rgb),0.08) !important;line-height:1.5;vertical-align:baseline;}
+  .cloze-input:disabled{opacity:1;}
+  .cloze-input.ok{border:1px solid var(--sage) !important;background:rgba(var(--sage-rgb),0.14) !important;color:var(--sage);}
+  .cloze-input.almost{border:1px solid var(--brass) !important;background:rgba(var(--brass-rgb),0.14) !important;}
+  .cloze-input.bad{border:1px solid var(--rose) !important;background:rgba(var(--rose-rgb),0.14) !important;color:var(--rose);text-decoration:line-through;}
+  .cloze-fix{color:var(--sage);font-weight:600;margin:0 4px 0 2px;}
+  .cloze-hint{font-size:11px;color:rgba(245,242,234,0.45);margin-right:2px;}
+
+  .listen-big{width:84px;height:84px;border-radius:50%;border:1px solid rgba(var(--brass-rgb),0.5);background:rgba(var(--brass-rgb),0.12);font-size:32px;cursor:pointer;display:block;margin:6px auto 4px;transition:transform 0.15s, background 0.15s;}
+  .listen-big:active{transform:scale(0.93);}
+  .listen-big.playing{background:rgba(var(--brass-rgb),0.28);}
+
+  .match-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:12px;font-size:13px;color:rgba(245,242,234,0.6);}
+  .match-time{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:24px;color:var(--paper);font-variant-numeric:tabular-nums;}
+  .match-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+  .match-col{display:flex;flex-direction:column;gap:8px;}
+  .match-btn{min-height:52px;padding:8px 10px;border-radius:14px;border:1px solid rgba(245,242,234,0.13);background:rgba(245,242,234,0.05);color:var(--paper);font-family:'Inter',sans-serif;font-size:14px;line-height:1.3;cursor:pointer;transition:background 0.15s, border-color 0.15s, opacity 0.3s, transform 0.15s;word-break:break-word;}
+  .match-btn.fr{font-weight:600;}
+  .match-btn.sel{border-color:var(--brass);background:rgba(var(--brass-rgb),0.2);}
+  .match-btn.wrong{border-color:var(--rose);background:rgba(var(--rose-rgb),0.22);animation:shake 0.3s;}
+  .match-btn.gone{opacity:0;pointer-events:none;transform:scale(0.92);}
+  @keyframes shake{25%{transform:translateX(-4px);}75%{transform:translateX(4px);}}
+
+  .life-item{display:flex;align-items:center;gap:12px;padding:11px 0;border-bottom:1px solid var(--line);}
+  .life-item:last-child{border-bottom:none;}
+  .life-item input{width:22px;height:22px;accent-color:var(--sage);flex-shrink:0;cursor:pointer;}
+  .life-item .w{font-weight:600;font-size:15px;}
+  .life-item .tr{font-size:13px;color:rgba(245,242,234,0.55);}
+  .life-item.done .w{color:var(--sage);}
+  .life-item .txt{flex:1;min-width:0;}
+  .pr-seg{display:flex;gap:6px;flex-wrap:wrap;}
+
+  @media (min-width:900px){
+    .pr-stats{grid-template-columns:repeat(4, 1fr);}
+    .pr-modes{grid-template-columns:repeat(3, 1fr);}
+    .fc-word{font-size:36px;}
+  }
+
 </style>
 </head>
 <body>
@@ -728,9 +839,10 @@ var Auth = (function(){
 
   <div class="view" id="view-french">
     <div class="subtabs">
-      <button class="subtab-btn active" data-subtab="text" onclick="switchFrenchSubtab('text')">Текст для чтения</button>
+      <button class="subtab-btn active" data-subtab="text" onclick="switchFrenchSubtab('text')">Чтение</button>
       <button class="subtab-btn" data-subtab="own" onclick="switchFrenchSubtab('own')">Свой текст</button>
       <button class="subtab-btn" data-subtab="dict" onclick="switchFrenchSubtab('dict')">Словарь</button>
+      <button class="subtab-btn" data-subtab="train" onclick="switchFrenchSubtab('train')">Тренировка</button>
     </div>
 
     <div class="subtab-view active" id="frenchSub-text">
@@ -801,6 +913,36 @@ var Auth = (function(){
         <div class="empty" id="dictEmpty" style="display:none;">В словаре пока ничего нет — добавляйте слова через разбор в тексте</div>
         <div class="hint">Клик по строке открывает полный разбор слова.</div>
       </div>
+    </div>
+
+    <div class="subtab-view" id="frenchSub-train">
+      <div class="card">
+        <h2>Упражнения</h2>
+        <div class="pr-modes" id="prModes"></div>
+      </div>
+
+      <div class="card pr-stage" id="prStage" style="display:none;"></div>
+
+      <div class="card" id="prLifeCard">
+        <h2>Слова дня</h2>
+        <div id="prLife"></div>
+      </div>
+
+      <div class="card pr-stats-card">
+        <h2>Прогресс</h2>
+        <div class="pr-stats" id="prStats"></div>
+        <div class="chart-wrap pr-chart"><canvas id="chartPractice"></canvas></div>
+        <div class="legend"><span><i style="background:#b8935a"></i>Упражнений за день, последние 14 дней</span></div>
+        <div class="pr-settings">
+          <label for="prNewPerDay">Новых слов в день</label>
+          <select id="prNewPerDay" onchange="Practice.setNewPerDay(this.value)">
+            <option value="0">0</option><option value="5">5</option><option value="10">10</option>
+            <option value="15">15</option><option value="20">20</option><option value="30">30</option>
+          </select>
+          <label class="pr-toggle"><input type="checkbox" id="prAutoSpeak" onchange="Practice.setAutoSpeak(this.checked)"> Озвучивать ответ</label>
+        </div>
+      </div>
+
     </div>
   </div>
 
@@ -880,7 +1022,8 @@ var Auth = (function(){
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
 <script>
-const todayStr = () => new Date().toISOString().slice(0,10);
+// Локальная дата (а не UTC): иначе после полуночи по Парижу «сегодня» ещё час-два показывало вчерашний день
+const todayStr = () => { const d = new Date(); return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0'); };
 let selectedDate = todayStr();
 let chartRange = 14;
 let chartInstances = {};
@@ -1223,6 +1366,12 @@ function renderClickableText(box, text){
   });
 }
 
+// Перерисовать текущий текст после изменения словаря (подсветка «known»)
+function rerenderFrenchBox(box){
+  if(box.id === 'prTextBox') Practice.rerenderText();
+  else renderClickableText(box, currentFrenchText);
+}
+
 function isWordInDictionary(word){
   if(!word) return false;
   const norm = word.trim().toLowerCase();
@@ -1324,7 +1473,7 @@ async function deleteDictionaryEntry(key, wordLabel){
     await loadDictionary();
     if(currentFrenchText && currentFrenchBoxId){
       const box = document.getElementById(currentFrenchBoxId);
-      if(box && box.style.display !== 'none') renderClickableText(box, currentFrenchText);
+      if(box && box.style.display !== 'none') rerenderFrenchBox(box);
     }
   }catch(e){ showToast('Не удалось удалить слово', true); }
 }
@@ -1334,7 +1483,9 @@ function switchFrenchSubtab(name){
   document.getElementById('frenchSub-text').classList.toggle('active', name === 'text');
   document.getElementById('frenchSub-own').classList.toggle('active', name === 'own');
   document.getElementById('frenchSub-dict').classList.toggle('active', name === 'dict');
+  document.getElementById('frenchSub-train').classList.toggle('active', name === 'train');
   if(name === 'dict') loadDictionary();
+  if(name === 'train') Practice.open();
   if(name === 'own') loadOwnFrenchText();
 }
 
@@ -1361,7 +1512,7 @@ async function addToDictionary(){
     await loadDictionary();
     if(currentFrenchText && currentFrenchBoxId){
       const box = document.getElementById(currentFrenchBoxId);
-      if(box && box.style.display !== 'none') renderClickableText(box, currentFrenchText);
+      if(box && box.style.display !== 'none') rerenderFrenchBox(box);
     }
   }catch(e){
     btn.disabled = false;
@@ -1410,7 +1561,7 @@ function renderWordPanel(panel, data){
     return;
   }
   let html = '';
-  html += '<div class="wp-head"><span class="wp-word">' + escapeHtml(data.word || '') + '</span><button class="wp-close" onclick="closeWordPanel()">✕</button></div>';
+  html += '<div class="wp-head"><span class="wp-word">' + escapeHtml(data.word || '') + ' <button class="speak-btn" type="button" data-say="' + escapeHtml(data.word || '') + '" onclick="speakFr(this.dataset.say)" aria-label="Прослушать">🔊</button></span><button class="wp-close" onclick="closeWordPanel()">✕</button></div>';
   if(data.transcription) html += '<div class="wp-translit">[' + escapeHtml(data.transcription) + ']</div>';
   if(data.translation) html += '<div class="wp-translation">' + escapeHtml(data.translation) + '</div>';
   if(data.partOfSpeech) html += '<span class="wp-tag">' + escapeHtml(data.partOfSpeech) + (data.gender ? ', ' + escapeHtml(data.gender) : '') + '</span>';
@@ -1747,6 +1898,1061 @@ if(isMobileDevice){
   const cameraBtn = document.getElementById('cameraBtn');
   if(cameraBtn) cameraBtn.style.display = 'inline-block';
 }
+
+// =====================================================================
+// ===== Тренировка слов: карточки, текст из слов, спряжения, на слух, пары, слова дня =====
+// =====================================================================
+
+// ----- Озвучка (встроенный синтезатор речи браузера, бесплатно) -----
+let frVoiceCache = null;
+function pickFrVoice(){
+  if(!('speechSynthesis' in window)) return null;
+  const voices = speechSynthesis.getVoices() || [];
+  frVoiceCache =
+    voices.find(v => /^fr[-_]FR/i.test(v.lang) && /Amélie|Thomas|Audrey|Google/i.test(v.name)) ||
+    voices.find(v => /^fr[-_]FR/i.test(v.lang)) ||
+    voices.find(v => /^fr/i.test(v.lang)) || null;
+  return frVoiceCache;
+}
+if('speechSynthesis' in window){
+  pickFrVoice();
+  speechSynthesis.onvoiceschanged = pickFrVoice;
+}
+function speakFr(text, rate, onEnd){
+  if(!text) return;
+  if(!('speechSynthesis' in window)){ showToast('Браузер не умеет озвучивать текст', true); return; }
+  speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = 'fr-FR';
+  const v = frVoiceCache || pickFrVoice();
+  if(v) u.voice = v;
+  u.rate = rate || 0.9;
+  if(onEnd){ u.onend = onEnd; u.onerror = onEnd; }
+  speechSynthesis.speak(u);
+}
+
+const Practice = (() => {
+  let state = { cards:{}, log:{}, life:{}, settings:{ newPerDay:10 }, practiceText:null };
+  let mode = null;
+  let session = null;
+  let matchTimer = null;
+  let textView = 'read';
+  let autoSpeak = false;
+  try{ autoSpeak = localStorage.getItem('dt_auto_speak') === '1'; }catch(e){}
+
+  const MODES = [
+    { id:'cards',  title:'Карточки',       desc:'Интервальные повторения: вписываете ответ, приложение решает, когда показать снова' },
+    { id:'text',   title:'Текст из слов',  desc:'AI пишет текст с вашими словами — читать или заполнять пропуски' },
+    { id:'conj',   title:'Спряжения',      desc:'Глаголы из словаря: présent, passé composé, futur simple' },
+    { id:'listen', title:'На слух',        desc:'Диктант: слушаете слово и пишете его' },
+    { id:'match',  title:'Пары на время',  desc:'Соедините 6 слов с переводами как можно быстрее' },
+  ];
+  const KIND_LABELS = { cards:'карточки', text:'текст', conj:'спряжения', listen:'на слух', match:'пары' };
+  const TENSES = [
+    { k:'present', label:'présent' },
+    { k:'passeCompose', label:'passé composé' },
+    { k:'futurSimple', label:'futur simple' },
+  ];
+  const PRONOUNS = ['je','tu','il/elle/on','nous','vous','ils/elles'];
+
+  // ---------- утилиты ----------
+  const $ = id => document.getElementById(id);
+  const today = () => todayStr();
+  const norm = w => (w || '').trim().toLowerCase();
+  const keyOf = (word, dir) => norm(word).replace(/[.$]/g, '_').slice(0, 120) + '|' + dir;
+  const words = () => dictionaryCache.filter(e => e.word && e.translation);
+  const cardOf = (e, dir) => state.cards[keyOf(e.word, dir)] || null;
+  const isDue = (c, d) => !!(c && c.due && c.due <= d);
+  const isLearned = e => { const c = cardOf(e, 'fr2ru'); return !!(c && c.interval >= 21); };
+  const isSeen = e => !!cardOf(e, 'fr2ru');
+  const attr = s => escapeHtml(s == null ? '' : String(s));
+
+  function shuffle(arr){
+    const a = arr.slice();
+    for(let i = a.length - 1; i > 0; i--){ const j = Math.floor(Math.random() * (i + 1)); const t = a[i]; a[i] = a[j]; a[j] = t; }
+    return a;
+  }
+  function sample(arr, n){ return shuffle(arr).slice(0, n); }
+
+  // Упрощение для сравнения ответов
+  function simplify(s){
+    return String(s || '').toLowerCase()
+      .replace(/ё/g, 'е')
+      .replace(/[’`´‘]/g, "'")
+      .replace(/\([^)]*\)/g, ' ')
+      .replace(/[.,!?;:«»"“”…]/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+  }
+  function stripAccents(s){ return String(s).normalize('NFD').replace(/[\u0300-\u036f]/g, ''); }
+  function lev(a, b){
+    if(a === b) return 0;
+    const m = a.length, n = b.length;
+    if(!m) return n; if(!n) return m;
+    let prev = new Array(n + 1), cur = new Array(n + 1);
+    for(let j = 0; j <= n; j++) prev[j] = j;
+    for(let i = 1; i <= m; i++){
+      cur[0] = i;
+      for(let j = 1; j <= n; j++){
+        cur[j] = Math.min(prev[j] + 1, cur[j-1] + 1, prev[j-1] + (a[i-1] === b[j-1] ? 0 : 1));
+      }
+      const t = prev; prev = cur; cur = t;
+    }
+    return prev[n];
+  }
+  const tolerance = len => len >= 9 ? 2 : len >= 5 ? 1 : 0;
+
+  // Ответ по-русски: несколько вариантов перевода через запятую/точку с запятой/«или»
+  function checkRu(answer, translation){
+    const a = simplify(answer);
+    if(!a) return { res:'bad' };
+    const alts = String(translation || '').split(/[,;\/]|\sили\s/).map(simplify).filter(Boolean);
+    alts.push(simplify(translation));
+    if(alts.some(x => x === a)) return { res:'ok' };
+    if(alts.some(x => lev(a, x) <= tolerance(x.length))) return { res:'almost', why:'опечатка' };
+    if(a.length >= 4 && alts.some(x => (' ' + x + ' ').indexOf(' ' + a + ' ') !== -1)) return { res:'almost', why:'часть перевода' };
+    return { res:'bad' };
+  }
+
+  // Ответ по-французски: точное совпадение, «почти» — без учёта акцентов или с одной опечаткой
+  function checkFr(answer, expectedList){
+    const a = simplify(answer);
+    if(!a) return { res:'bad' };
+    const exp = expectedList.map(simplify).filter(Boolean);
+    if(exp.some(x => x === a)) return { res:'ok' };
+    if(exp.some(x => stripAccents(x) === stripAccents(a))) return { res:'almost', why:'проверьте акценты' };
+    if(exp.some(x => lev(stripAccents(a), stripAccents(x)) <= tolerance(x.length))) return { res:'almost', why:'опечатка' };
+    return { res:'bad' };
+  }
+
+  async function post(url, body){
+    const r = await fetch(url, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(Object.assign({ today: today() }, body)) });
+    const data = await r.json().catch(() => ({}));
+    if(!r.ok) throw Object.assign(new Error(data.error || 'request_failed'), { data });
+    return data;
+  }
+
+  async function logActivity(kind, correct, total, extra){
+    try{
+      const data = await post('/api/practice/log', Object.assign({ kind, correct, total }, extra || {}));
+      const d = today();
+      state.log[d] = state.log[d] || {};
+      state.log[d][kind] = (state.log[d][kind] || 0) + total;
+      state.log[d][kind + 'Correct'] = (state.log[d][kind + 'Correct'] || 0) + correct;
+      if(data.bestMatchMs) state.settings.bestMatchMs = data.bestMatchMs;
+      renderStats();
+      renderModes();
+      return data;
+    }catch(e){ showToast('Результат не сохранился — нет связи', true); return {}; }
+  }
+
+  // ---------- загрузка и общий рендер ----------
+  async function open(){
+    await loadDictionary();
+    try{
+      const r = await fetch('/api/practice');
+      const data = await r.json();
+      state = Object.assign(state, data);
+      state.settings = state.settings || { newPerDay:10 };
+    }catch(e){ showToast('Не удалось загрузить тренировку', true); }
+    $('prNewPerDay').value = String(state.settings.newPerDay == null ? 10 : state.settings.newPerDay);
+    $('prAutoSpeak').checked = autoSpeak;
+    renderStats();
+    await renderLife();
+    renderModes();
+    requestAnimationFrame(() => requestAnimationFrame(renderChart));
+  }
+
+  function dayTotal(entry){
+    if(!entry) return 0;
+    return ['cards','text','conj','listen','match'].reduce((sum, k) => sum + (entry[k] || 0), 0);
+  }
+
+  function streak(){
+    let d = today();
+    if(!dayTotal(state.log[d])) d = addDays(d, -1);
+    let n = 0;
+    while(dayTotal(state.log[d]) > 0){ n++; d = addDays(d, -1); }
+    return n;
+  }
+
+  function newLeftToday(){
+    const done = (state.log[today()] && state.log[today()].newWords) || 0;
+    return Math.max(0, (state.settings.newPerDay == null ? 10 : state.settings.newPerDay) - done);
+  }
+
+  // Очередь карточек: всё, что «созрело», плюс новые слова в пределах дневного лимита
+  function buildQueue(){
+    const d = today();
+    const due = [], fresh = [];
+    words().forEach(e => {
+      const f = cardOf(e, 'fr2ru');
+      if(!f){ fresh.push({ entry:e, dir:'fr2ru' }); return; }
+      if(isDue(f, d)) due.push({ entry:e, dir:'fr2ru' });
+      const r = cardOf(e, 'ru2fr');
+      // Обратное направление открывается, когда слово хотя бы раз узнано в прямом
+      if(!r){ if(f.reps >= 1 && f.lastReviewed !== d) due.push({ entry:e, dir:'ru2fr' }); }
+      else if(isDue(r, d)) due.push({ entry:e, dir:'ru2fr' });
+    });
+    fresh.sort((a, b) => String(a.entry.addedAt || '').localeCompare(String(b.entry.addedAt || '')));
+    return shuffle(due.slice(0, 120).concat(fresh.slice(0, newLeftToday())));
+  }
+
+  function renderStats(){
+    const all = words();
+    const learned = all.filter(isLearned).length;
+    const inProgress = all.filter(e => isSeen(e) && !isLearned(e)).length;
+    const dueCount = buildQueue().length;
+    const st = streak();
+    $('prStats').innerHTML =
+      stat(st, st === 1 ? 'день подряд' : 'дней подряд', st > 0 ? 'hot' : '') +
+      stat(dueCount, 'карточек на сегодня', '') +
+      stat(learned, 'выучено (интервал 3+ нед.)', 'good') +
+      stat(inProgress + ' / ' + all.length, 'в процессе / всего слов', '');
+  }
+  function stat(num, label, cls){
+    return '<div class="pr-stat ' + cls + '"><div class="num">' + escapeHtml(String(num)) + '</div><div class="lbl">' + escapeHtml(label) + '</div></div>';
+  }
+
+  function renderChart(){
+    if(typeof Chart === 'undefined') return;
+    const labels = [], data = [];
+    for(let i = 13; i >= 0; i--){
+      const d = addDays(today(), -i);
+      labels.push(d.slice(8, 10) + '.' + d.slice(5, 7));
+      data.push(dayTotal(state.log[d]));
+    }
+    upsertChart('chartPractice', { type:'bar', data:{ labels, datasets:[
+      { label:'Упражнений', data, backgroundColor:chartColors.brass, borderRadius:4 }
+    ]}, options: baseOpts() });
+  }
+
+  function renderModes(){
+    const dueCount = buildQueue().length;
+    const verbs = verbList().length;
+    const best = state.settings.bestMatchMs;
+    const badges = {
+      cards: dueCount ? { t: dueCount + ' на сегодня' } : { t:'всё повторено ✓', ok:true },
+      text: { t: state.practiceText ? 'есть сохранённый текст' : 'нужно от 3 слов' },
+      conj: { t: verbs ? verbs + ' ' + plural(verbs, 'глагол', 'глагола', 'глаголов') : 'пока нет глаголов' },
+      listen: { t: ('speechSynthesis' in window) ? 'голос браузера' : 'не поддерживается' },
+      match: { t: best ? 'рекорд ' + (best / 1000).toFixed(1) + ' с' : 'рекорда пока нет' },
+    };
+    if(state.practiceText == null && words().length >= 3) badges.text.t = 'один запрос к AI';
+    $('prModes').innerHTML = MODES.map(m =>
+      '<button class="pr-mode' + (mode === m.id ? ' active' : '') + '" type="button" onclick="Practice.start(\'' + m.id + '\')">' +
+        '<span class="t">' + m.title + '</span>' +
+        '<span class="d">' + m.desc + '</span>' +
+        '<span class="b' + (badges[m.id].ok ? ' ok' : '') + '">' + escapeHtml(badges[m.id].t) + '</span>' +
+      '</button>'
+    ).join('');
+  }
+
+  function plural(n, one, few, many){
+    const n10 = n % 10, n100 = n % 100;
+    if(n10 === 1 && n100 !== 11) return one;
+    if(n10 >= 2 && n10 <= 4 && (n100 < 12 || n100 > 14)) return few;
+    return many;
+  }
+
+  function stageShow(title, html){
+    const el = $('prStage');
+    el.style.display = 'block';
+    el.scrollLeft = 0;
+    el.innerHTML = '<h2><span>' + escapeHtml(title) + '</span><button class="pr-close" type="button" onclick="Practice.stop()" aria-label="Закрыть">✕</button></h2>' + html;
+    return el;
+  }
+
+  function stop(){
+    mode = null; session = null;
+    clearInterval(matchTimer);
+    if('speechSynthesis' in window) speechSynthesis.cancel();
+    $('prStage').style.display = 'none';
+    $('prStage').innerHTML = '';
+    renderModes();
+    renderStats();
+    requestAnimationFrame(renderChart);
+  }
+
+  function start(id){
+    clearInterval(matchTimer);
+    mode = id;
+    renderModes();
+    if(id === 'cards') startCards();
+    if(id === 'text') showTextMode();
+    if(id === 'conj') startConj();
+    if(id === 'listen') startListen();
+    if(id === 'match') startMatch();
+    setTimeout(() => { const el = $('prStage'); if(el) el.scrollIntoView({ behavior:'smooth', block:'start' }); }, 50);
+  }
+
+  function progressBar(done, total){
+    const pct = total ? Math.round(done / total * 100) : 0;
+    return '<div class="pr-progress"><i style="width:' + pct + '%"></i></div>';
+  }
+
+  function focusInput(id){
+    const el = $(id);
+    if(el) setTimeout(() => el.focus(), 30);
+  }
+
+  function highlightInSentence(sentence, word){
+    const safe = escapeHtml(sentence || '');
+    if(!word) return safe;
+    const w = escapeHtml(word).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    return safe.replace(new RegExp('(^|[^A-Za-zÀ-ÖØ-öø-ÿŒœ])(' + w + ')(?![A-Za-zÀ-ÖØ-öø-ÿŒœ])', 'i'), '$1<b>$2</b>');
+  }
+
+  function speakBtn(text){
+    return '<button class="speak-btn" type="button" data-say="' + attr(text) + '" onclick="speakFr(this.dataset.say)" aria-label="Прослушать">🔊</button>';
+  }
+
+  // =================== 1. Карточки ===================
+  function startCards(){
+    const queue = buildQueue();
+    if(!words().length){
+      stageShow('Карточки', '<div class="empty">В словаре пока нет слов. Добавляйте их кнопкой «+ В словарь» при разборе текста.</div>');
+      return;
+    }
+    if(!queue.length){
+      stageShow('Карточки', '<div class="pr-summary"><div class="big">✓</div><p>На сегодня всё повторено. Следующие карточки появятся завтра' +
+        (newLeftToday() === 0 ? ', а лимит новых слов на сегодня исчерпан' : '') + '.</p></div>');
+      return;
+    }
+    session = { queue, idx:0, total:queue.length, correct:0, reviewed:0, phase:'ask', result:null };
+    renderCard();
+  }
+
+  function renderCard(){
+    const s = session;
+    if(s.idx >= s.queue.length) return finishCards();
+    const item = s.queue[s.idx];
+    const e = item.entry;
+    const isFr = item.dir === 'fr2ru';
+    const card = cardOf(e, item.dir);
+    const tag = !card ? 'новое' : item.repeat ? 'ещё раз' : 'повторение';
+
+    let h = progressBar(Math.min(s.idx, s.total), s.total);
+    h += '<div class="fc-meta"><span class="fc-dir">' + (isFr ? 'FR → RU' : 'RU → FR') + '</span><span>' + tag + ' · ' + (Math.min(s.idx + 1, s.queue.length)) + ' из ' + s.queue.length + '</span></div>';
+    if(isFr){
+      h += '<div class="fc-prompt"><span class="fc-word">' + escapeHtml(e.word) + '</span>' + speakBtn(e.word) + '</div>';
+      if(e.transcription) h += '<div class="fc-sub">[' + escapeHtml(e.transcription) + ']</div>';
+      if(e.sentence) h += '<div class="fc-context">' + highlightInSentence(e.sentence, e.word) + '</div>';
+    } else {
+      h += '<div class="fc-prompt"><span class="fc-word">' + escapeHtml(e.translation) + '</span></div>';
+      const tagText = [e.partOfSpeech, e.gender].filter(Boolean).join(', ');
+      if(tagText) h += '<div class="fc-sub">' + escapeHtml(tagText) + '</div>';
+    }
+
+    if(s.phase === 'ask'){
+      h += '<div class="fc-input"><input type="text" id="fcAnswer" autocomplete="off" autocapitalize="none" autocorrect="off" spellcheck="false" ' +
+        (isFr ? 'lang="ru" placeholder="Перевод на русский"' : 'lang="fr" placeholder="По-французски"') +
+        ' onkeydown="if(event.key===\'Enter\'){event.preventDefault();Practice.checkCard();}"></div>';
+      h += '<div class="btn-row end"><button class="ghost-btn" type="button" onclick="Practice.checkCard(true)">Не помню</button>' +
+        '<button class="save-btn" type="button" onclick="Practice.checkCard()">Проверить</button></div>';
+      stageShow('Карточки', h);
+      focusInput('fcAnswer');
+      return;
+    }
+
+    // фаза ответа
+    const r = s.result;
+    const correctText = isFr ? e.translation : e.word;
+    if(r.res === 'ok') h += '<div class="fc-result ok">Верно<span class="ans">' + escapeHtml(correctText) + '</span></div>';
+    else if(r.res === 'almost') h += '<div class="fc-result almost">Почти — ' + escapeHtml(r.why || '') + '. Вы написали «' + escapeHtml(r.given) + '»<span class="ans">' + escapeHtml(correctText) + '</span></div>';
+    else h += '<div class="fc-result bad">' + (r.given ? 'Вы написали «' + escapeHtml(r.given) + '». ' : '') + 'Правильно:<span class="ans">' + escapeHtml(correctText) + '</span></div>';
+
+    let det = '';
+    if(!isFr){
+      det += '<b>' + escapeHtml(e.word) + '</b> ' + speakBtn(e.word);
+      if(e.transcription) det += ' <span style="opacity:0.6">[' + escapeHtml(e.transcription) + ']</span>';
+    }
+    if(!isFr && e.sentence) det += '<div class="fc-context">' + highlightInSentence(e.sentence, e.word) + '</div>';
+    if(e.notes) det += '<div style="margin-top:8px;opacity:0.8">' + escapeHtml(e.notes) + '</div>';
+    h += '<div class="fc-details">' + det + '</div>';
+
+    if(item.repeat){
+      h += '<div class="btn-row end"><button class="save-btn" type="button" id="fcPrimary" onclick="Practice.grade(null)">Дальше</button></div>';
+    } else if(r.res === 'bad'){
+      h += '<div class="grade-row two">' +
+        gradeBtn('again', 'Не вспомнил', 'снова сегодня и завтра', true) +
+        gradeBtn('hard', 'Я был прав', 'засчитать', false) + '</div>';
+    } else {
+      const c = cardOf(e, item.dir);
+      h += '<div class="grade-row">' +
+        gradeBtn('hard', 'Трудно', nextLabel(c, 'hard'), r.res === 'almost') +
+        gradeBtn('good', 'Хорошо', nextLabel(c, 'good'), r.res === 'ok') +
+        gradeBtn('easy', 'Легко', nextLabel(c, 'easy'), false) + '</div>';
+    }
+    stageShow('Карточки', h);
+    if(autoSpeak) speakFr(e.word);
+  }
+
+  function gradeBtn(g, label, sub, primary){
+    return '<button class="grade-btn ' + g + (primary ? ' primary' : '') + '" type="button"' + (primary ? ' id="fcPrimary"' : '') +
+      ' onclick="Practice.grade(\'' + g + '\')">' + label + '<small>' + escapeHtml(sub) + '</small></button>';
+  }
+
+  // Предпросмотр интервала — та же формула, что на сервере
+  function nextLabel(c, g){
+    const reps = c ? c.reps : 0, ease = c ? c.ease : 2.5, iv = c ? Math.max(c.interval || 1, 1) : 1;
+    let n;
+    if(g === 'hard') n = reps === 0 ? 1 : Math.max(iv + 1, Math.round(iv * 1.2));
+    else if(g === 'easy') n = reps === 0 ? 4 : Math.round(iv * ease * 1.3);
+    else n = reps === 0 ? 1 : reps === 1 ? 3 : Math.round(iv * ease);
+    n = Math.min(365, Math.max(1, n));
+    if(n === 1) return 'завтра';
+    if(n < 31) return 'через ' + n + ' ' + plural(n, 'день', 'дня', 'дней');
+    const m = Math.round(n / 30);
+    return 'через ' + m + ' мес.';
+  }
+
+  function checkCard(giveUp){
+    const s = session;
+    if(!s || s.phase !== 'ask') return;
+    const item = s.queue[s.idx];
+    const e = item.entry;
+    const given = giveUp ? '' : ($('fcAnswer').value || '').trim();
+    if(!giveUp && !given){ focusInput('fcAnswer'); return; }
+    let r = giveUp ? { res:'bad' } : (item.dir === 'fr2ru' ? checkRu(given, e.translation) : checkFr(given, [e.word]));
+    r.given = given;
+    s.result = r;
+    s.phase = 'answer';
+    renderCard();
+  }
+
+  async function grade(g){
+    const s = session;
+    if(!s || s.phase !== 'answer') return;
+    const item = s.queue[s.idx];
+    if(g && !item.repeat){
+      s.reviewed++;
+      if(g !== 'again') s.correct++;
+      // Забытое слово показываем ещё раз в конце этой же сессии (без повторной записи в расписание)
+      if(g === 'again') s.queue.push({ entry:item.entry, dir:item.dir, repeat:true });
+      const key = keyOf(item.entry.word, item.dir);
+      post('/api/practice/review', { key, grade:g }).then(data => {
+        if(data.card) state.cards[key] = data.card;
+      }).catch(() => showToast('Ответ не сохранился — нет связи', true));
+      const d = today();
+      state.log[d] = state.log[d] || {};
+      state.log[d].cards = (state.log[d].cards || 0) + 1;
+      if(!cardOf(item.entry, item.dir) && item.dir === 'fr2ru') state.log[d].newWords = (state.log[d].newWords || 0) + 1;
+      // локально помечаем карточку как виденную, чтобы счётчики обновились сразу
+      if(!state.cards[key]) state.cards[key] = { reps: g === 'again' ? 0 : 1, interval:1, ease:2.5, due:addDays(d, 1), lastReviewed:d, firstSeen:d };
+    }
+    s.idx++;
+    s.phase = 'ask';
+    s.result = null;
+    renderCard();
+  }
+
+  function finishCards(){
+    const s = session;
+    const pct = s.reviewed ? Math.round(s.correct / s.reviewed * 100) : 0;
+    stageShow('Карточки', '<div class="pr-summary"><div class="big">' + pct + '%</div>' +
+      '<p>Повторено карточек: ' + s.reviewed + ', вспомнили сразу: ' + s.correct + '.<br>Забытые слова вернутся завтра, остальные — по расписанию.</p></div>' +
+      '<div class="btn-row end"><button class="ghost-btn" type="button" onclick="Practice.stop()">Готово</button></div>');
+    session = null;
+    renderStats(); renderModes(); renderChart();
+  }
+
+  // =================== 2. Текст из слов ===================
+  function pickTextWords(){
+    const d = today();
+    const all = words();
+    const due = all.filter(e => isDue(cardOf(e, 'fr2ru'), d));
+    const progress = all.filter(e => isSeen(e) && !isLearned(e) && due.indexOf(e) === -1)
+      .sort((a, b) => String(cardOf(b,'fr2ru').lastReviewed || '').localeCompare(String(cardOf(a,'fr2ru').lastReviewed || '')));
+    const fresh = all.filter(e => !isSeen(e));
+    const rest = all.filter(e => due.indexOf(e) === -1 && progress.indexOf(e) === -1 && fresh.indexOf(e) === -1);
+    return shuffle(due).concat(progress, fresh, shuffle(rest)).slice(0, 8);
+  }
+
+  function showTextMode(){
+    const all = words();
+    const pt = state.practiceText;
+    let h = '';
+    if(all.length < 3 && !pt){
+      stageShow('Текст из слов', '<div class="empty">Нужно хотя бы 3 слова в словаре.</div>');
+      return;
+    }
+    const next = pickTextWords();
+    const lvl = (pt && pt.level) || $('frenchLevel').value || 'A2';
+    h += '<div class="hint" style="margin:0 0 6px;">Слова для нового текста (в первую очередь — те, что пора повторить):</div>';
+    h += '<div class="pr-chips">' + next.map(e => '<span class="pr-chip">' + escapeHtml(e.word) + '</span>').join('') + '</div>';
+    h += '<div class="btn-row"><select id="prTextLevel" style="width:auto;">' +
+      ['A1','A2','B1','B2'].map(l => '<option' + (l === lvl ? ' selected' : '') + '>' + l + '</option>').join('') + '</select>' +
+      '<button class="save-btn" type="button" id="prTextGen" onclick="Practice.generateText()"' + (all.length < 3 ? ' disabled' : '') + '>' + (pt ? 'Новый текст' : 'Сгенерировать текст') + '</button></div>';
+    h += '<div id="prTextArea"></div>';
+    stageShow('Текст из слов', h);
+    if(pt) renderTextArea();
+  }
+
+  async function generateText(){
+    const btn = $('prTextGen');
+    const list = pickTextWords().map(e => ({ word:e.word, translation:e.translation }));
+    btn.disabled = true;
+    const area = $('prTextArea');
+    area.innerHTML = '<div class="generated-text loading" style="display:block;">Пишу текст с вашими словами…</div>';
+    try{
+      const r = await fetch('/api/practice-text', { method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({ level: $('prTextLevel').value, words: list }) });
+      const data = await r.json();
+      if(!r.ok){
+        area.innerHTML = '<div class="empty">' + escapeHtml(data.error === 'no_api_key' ? 'Не задан API-ключ Anthropic' : 'Не удалось сгенерировать текст: ' + (data.details || data.error || '')) + '</div>';
+        return;
+      }
+      state.practiceText = data;
+      textView = 'read';
+      renderTextArea();
+      renderModes();
+    }catch(e){
+      area.innerHTML = '<div class="empty">Нет связи с сервером.</div>';
+    }finally{
+      btn.disabled = false;
+      btn.textContent = 'Новый текст';
+    }
+  }
+
+  function renderTextArea(){
+    const area = $('prTextArea');
+    if(!area || !state.practiceText) return;
+    area.innerHTML =
+      '<div class="btn-row" style="margin-top:16px;"><div class="pr-seg">' +
+        '<button class="ghost-btn' + (textView === 'read' ? ' on' : '') + '" type="button" onclick="Practice.setTextView(\'read\')">Читать</button>' +
+        '<button class="ghost-btn' + (textView === 'cloze' ? ' on' : '') + '" type="button" onclick="Practice.setTextView(\'cloze\')">С пропусками</button>' +
+        '<button class="ghost-btn" type="button" onclick="Practice.speakText()">🔊 Прослушать</button>' +
+      '</div></div>' +
+      '<div class="generated-text" id="prTextBox" style="display:block;"></div>' +
+      '<div id="prClozeActions"></div>' +
+      '<div class="hint">' + (textView === 'read'
+        ? 'Синим выделены слова из вашего словаря. Любое слово кликабельно — как в обычном тексте.'
+        : 'Впишите пропущенные слова в той форме, в которой они стоят в тексте. Подсказка — перевод исходного слова.') + '</div>';
+    if(textView === 'read') renderTextReading(); else renderCloze();
+  }
+
+  const MARK_RE = /\*\*([^*]+?)\*\*/g;
+  function parseMark(inner){
+    const i = inner.lastIndexOf('|');
+    return i === -1 ? { form: inner.trim(), base: inner.trim() } : { form: inner.slice(0, i).trim(), base: inner.slice(i + 1).trim() };
+  }
+  function plainText(text){ return text.replace(MARK_RE, (m, inner) => parseMark(inner).form); }
+  function translationFor(base){
+    const e = findDictionaryEntry(base);
+    if(e) return e.translation;
+    const w = (state.practiceText.words || []).find(x => norm(x.word) === norm(base));
+    return w ? w.translation : '';
+  }
+
+  // Та же разбивка на кликабельные слова, что и в обычных текстах, плюс выделение целевых слов
+  function appendWords(box, chunk, sentence){
+    const wordRe = /[A-Za-zÀ-ÖØ-öø-ÿŒœ]+(?:['’-][A-Za-zÀ-ÖØ-öø-ÿŒœ]+)*/g;
+    let last = 0, m;
+    while((m = wordRe.exec(chunk)) !== null){
+      if(m.index > last) box.appendChild(document.createTextNode(chunk.slice(last, m.index)));
+      box.appendChild(makeWordSpan(m[0], sentence, ''));
+      last = m.index + m[0].length;
+    }
+    if(last < chunk.length) box.appendChild(document.createTextNode(chunk.slice(last)));
+  }
+  function makeWordSpan(word, sentence, extraClass){
+    const span = document.createElement('span');
+    span.className = 'fr-word' + (findDictionaryEntry(word) ? ' known' : '') + (extraClass ? ' ' + extraClass : '');
+    span.textContent = word;
+    span.dataset.word = word;
+    span.dataset.sentence = sentence;
+    span.addEventListener('click', () => handleWordClick(span));
+    return span;
+  }
+
+  function eachSentence(text, fn){
+    splitIntoSentences(text).forEach(sentence => {
+      const plain = plainText(sentence).trim();
+      let last = 0, m;
+      MARK_RE.lastIndex = 0;
+      const parts = [];
+      while((m = MARK_RE.exec(sentence)) !== null){
+        if(m.index > last) parts.push({ text: sentence.slice(last, m.index) });
+        parts.push({ mark: parseMark(m[1]) });
+        last = m.index + m[0].length;
+      }
+      if(last < sentence.length) parts.push({ text: sentence.slice(last) });
+      fn(parts, plain);
+    });
+  }
+
+  function renderTextReading(){
+    const box = $('prTextBox');
+    if(!box) return;
+    const text = state.practiceText.text;
+    currentFrenchText = plainText(text);
+    currentFrenchBoxId = 'prTextBox';
+    box.innerHTML = '';
+    eachSentence(text, (parts, plain) => {
+      parts.forEach(p => {
+        if(p.text) appendWords(box, p.text, plain);
+        else {
+          const span = makeWordSpan(p.mark.form, plain, 'target');
+          span.title = p.mark.base;
+          box.appendChild(span);
+        }
+      });
+      box.appendChild(document.createTextNode(' '));
+    });
+    $('prClozeActions').innerHTML = '';
+  }
+
+  function renderCloze(){
+    const box = $('prTextBox');
+    if(!box) return;
+    box.innerHTML = '';
+    let n = 0;
+    eachSentence(state.practiceText.text, (parts) => {
+      parts.forEach(p => {
+        if(p.text){ box.appendChild(document.createTextNode(p.text)); return; }
+        n++;
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.className = 'cloze-input';
+        input.setAttribute('autocomplete', 'off');
+        input.setAttribute('autocapitalize', 'none');
+        input.setAttribute('autocorrect', 'off');
+        input.spellcheck = false;
+        input.dataset.answer = p.mark.form;
+        const tr = translationFor(p.mark.base);
+        input.placeholder = tr ? tr.split(/[,;]/)[0].slice(0, 22) : '…';
+        input.style.width = Math.max(64, Math.min(200, Math.max(p.mark.form.length, input.placeholder.length) * 8.5 + 22)) + 'px';
+        input.addEventListener('keydown', ev => {
+          if(ev.key === 'Enter'){ ev.preventDefault(); const all = box.querySelectorAll('.cloze-input'); const i = Array.prototype.indexOf.call(all, input); if(all[i + 1]) all[i + 1].focus(); else checkCloze(); }
+        });
+        box.appendChild(input);
+      });
+      box.appendChild(document.createTextNode(' '));
+    });
+    $('prClozeActions').innerHTML = n
+      ? '<div class="btn-row end"><button class="ghost-btn" type="button" onclick="Practice.setTextView(\'cloze\')">Заново</button><button class="save-btn" type="button" id="prClozeCheck" onclick="Practice.checkCloze()">Проверить</button></div>'
+      : '<div class="empty">В этом тексте нет размеченных слов — сгенерируйте новый.</div>';
+  }
+
+  function checkCloze(){
+    const box = $('prTextBox');
+    const inputs = box.querySelectorAll('.cloze-input');
+    if(!inputs.length || inputs[0].disabled) return;
+    let ok = 0;
+    inputs.forEach(input => {
+      const r = checkFr(input.value, [input.dataset.answer]);
+      input.classList.add(r.res);
+      input.disabled = true;
+      if(r.res !== 'bad') ok++;
+      if(r.res !== 'ok'){
+        const fix = document.createElement('span');
+        fix.className = 'cloze-fix';
+        fix.textContent = input.dataset.answer;
+        input.insertAdjacentElement('afterend', fix);
+      }
+    });
+    const btn = $('prClozeCheck');
+    if(btn) btn.remove();
+    showToast('Верно ' + ok + ' из ' + inputs.length);
+    logActivity('text', ok, inputs.length);
+  }
+
+  function speakText(){
+    if(!state.practiceText) return;
+    speakFr(plainText(state.practiceText.text), 0.85);
+  }
+
+  // =================== 3. Спряжения ===================
+  function verbList(){
+    const seen = {};
+    return dictionaryCache.filter(e => {
+      const v = e.verb;
+      if(!v || !(v.present || v.passeCompose || v.futurSimple)) return false;
+      const k = norm(v.infinitive || e.word);
+      if(seen[k]) return false;
+      seen[k] = true;
+      return true;
+    });
+  }
+
+  let conjTenses = { present:true, passeCompose:true, futurSimple:true };
+
+  function startConj(){
+    const verbs = verbList();
+    if(!verbs.length){
+      stageShow('Спряжения', '<div class="empty">В словаре пока нет глаголов с таблицами спряжений. Добавляйте глаголы из текстов — таблицы подтянутся автоматически.</div>');
+      return;
+    }
+    const qs = [];
+    let guard = 0;
+    while(qs.length < 10 && guard++ < 200){
+      const e = verbs[Math.floor(Math.random() * verbs.length)];
+      const tenses = TENSES.filter(t => conjTenses[t.k] && e.verb[t.k]);
+      if(!tenses.length) continue;
+      const t = tenses[Math.floor(Math.random() * tenses.length)];
+      const pron = PRONOUNS[Math.floor(Math.random() * PRONOUNS.length)];
+      const form = e.verb[t.k][pron];
+      if(!form) continue;
+      const dupe = qs.some(q => q.entry === e && q.tense.k === t.k && q.pron === pron);
+      if(!dupe) qs.push({ entry:e, tense:t, pron, form });
+    }
+    if(!qs.length){
+      stageShow('Спряжения', '<div class="empty">Для выбранных времён нет данных — включите другие времена.</div>' + conjTenseToggles());
+      return;
+    }
+    session = { qs, idx:0, correct:0, phase:'ask', result:null };
+    renderConj();
+  }
+
+  function conjTenseToggles(){
+    return '<div class="btn-row">' + TENSES.map(t =>
+      '<button class="ghost-btn' + (conjTenses[t.k] ? ' on' : '') + '" type="button" onclick="Practice.toggleTense(\'' + t.k + '\')">' + t.label + '</button>'
+    ).join('') + '</div>';
+  }
+
+  function toggleTense(k){
+    conjTenses[k] = !conjTenses[k];
+    if(!conjTenses.present && !conjTenses.passeCompose && !conjTenses.futurSimple) conjTenses[k] = true;
+    startConj();
+  }
+
+  // Ответ сравниваем без местоимения; «allé(e)» принимаем в обоих вариантах
+  const PRON_RE = /^(?:je |j'|tu |il\/elle\/on |il\/elle |ils\/elles |il |elle |on |nous |vous |ils |elles )/;
+  function stripPron(s){ let x = simplify(s), prev; do{ prev = x; x = x.replace(PRON_RE, '').trim(); }while(x !== prev); return x; }
+  function formVariants(form){
+    const f = String(form);
+    return [f.replace(/\(([^)]*)\)/g, ''), f.replace(/\(([^)]*)\)/g, '$1')]
+      .map(stripPron).filter((v, i, a) => v && a.indexOf(v) === i);
+  }
+
+  function renderConj(){
+    const s = session;
+    if(s.idx >= s.qs.length){
+      const pct = Math.round(s.correct / s.qs.length * 100);
+      stageShow('Спряжения', '<div class="pr-summary"><div class="big">' + s.correct + ' / ' + s.qs.length + '</div><p>' +
+        (pct >= 80 ? 'Отлично!' : pct >= 50 ? 'Неплохо — ошибки стоит повторить.' : 'Спряжения — это тренировка, ещё пара подходов.') + '</p></div>' +
+        conjTenseToggles() +
+        '<div class="btn-row end"><button class="ghost-btn" type="button" onclick="Practice.stop()">Готово</button><button class="save-btn" type="button" onclick="Practice.start(\'conj\')">Ещё 10</button></div>');
+      logActivity('conj', s.correct, s.qs.length);
+      session = null;
+      return;
+    }
+    const q = s.qs[s.idx];
+    const inf = q.entry.verb.infinitive || q.entry.word;
+    let h = progressBar(s.idx, s.qs.length);
+    h += '<div class="fc-meta"><span class="fc-dir">' + escapeHtml(q.tense.label) + '</span><span>' + (s.idx + 1) + ' из ' + s.qs.length + '</span></div>';
+    h += '<div class="fc-prompt"><span class="fc-word">' + escapeHtml(q.pron.replace(/\//g, ' / ')) + ' · ' + escapeHtml(inf) + '</span></div>';
+    h += '<div class="fc-sub">' + escapeHtml(q.entry.verb.group || '') + (q.entry.translation ? ' — ' + escapeHtml(q.entry.translation) : '') + '</div>';
+    if(s.phase === 'ask'){
+      h += '<div class="fc-input"><input type="text" id="conjAnswer" lang="fr" autocomplete="off" autocapitalize="none" autocorrect="off" spellcheck="false" placeholder="Форма глагола" onkeydown="if(event.key===\'Enter\'){event.preventDefault();Practice.checkConj();}"></div>';
+      h += '<div class="btn-row end"><button class="ghost-btn" type="button" onclick="Practice.checkConj(true)">Не знаю</button><button class="save-btn" type="button" onclick="Practice.checkConj()">Проверить</button></div>';
+      stageShow('Спряжения', h);
+      focusInput('conjAnswer');
+      return;
+    }
+    const r = s.result;
+    const cls = r.res;
+    const label = r.res === 'ok' ? 'Верно' : r.res === 'almost' ? 'Почти — ' + r.why : (r.given ? 'Вы написали «' + escapeHtml(r.given) + '». Правильно:' : 'Правильно:');
+    h += '<div class="fc-result ' + cls + '">' + label + '<span class="ans">' + escapeHtml(q.form) + ' ' + speakBtn(q.form) + '</span></div>';
+    const table = q.entry.verb[q.tense.k];
+    h += '<table class="verb-table" style="margin-top:12px;"><tbody>' + PRONOUNS.map(p =>
+      '<tr' + (p === q.pron ? ' style="background:rgba(212,165,101,0.12)"' : '') + '><td>' + escapeHtml(p) + '</td><td>' + escapeHtml(table[p] || '—') + '</td></tr>').join('') + '</tbody></table>';
+    h += '<div class="btn-row end"><button class="save-btn" type="button" id="fcPrimary" onclick="Practice.nextConj()">Дальше</button></div>';
+    stageShow('Спряжения', h);
+    if(autoSpeak) speakFr(q.form);
+  }
+
+  function checkConj(giveUp){
+    const s = session;
+    if(!s || s.phase !== 'ask') return;
+    const q = s.qs[s.idx];
+    const given = giveUp ? '' : ($('conjAnswer').value || '').trim();
+    if(!giveUp && !given){ focusInput('conjAnswer'); return; }
+    const r = giveUp ? { res:'bad' } : checkFr(stripPron(given), formVariants(q.form));
+    r.given = given;
+    if(r.res !== 'bad') s.correct++;
+    s.result = r;
+    s.phase = 'answer';
+    renderConj();
+  }
+
+  function nextConj(){
+    if(!session) return;
+    session.idx++;
+    session.phase = 'ask';
+    renderConj();
+  }
+
+  // =================== 4. На слух ===================
+  function startListen(){
+    if(!('speechSynthesis' in window)){
+      stageShow('На слух', '<div class="empty">Этот браузер не поддерживает озвучку.</div>');
+      return;
+    }
+    const all = words();
+    if(!all.length){
+      stageShow('На слух', '<div class="empty">В словаре пока нет слов.</div>');
+      return;
+    }
+    const seen = all.filter(isSeen);
+    const pool = seen.length >= 10 ? seen : all;
+    session = { list: sample(pool, Math.min(10, pool.length)), idx:0, correct:0, phase:'ask', result:null };
+    renderListen(true);
+  }
+
+  function renderListen(autoplay){
+    const s = session;
+    if(s.idx >= s.list.length){
+      stageShow('На слух', '<div class="pr-summary"><div class="big">' + s.correct + ' / ' + s.list.length + '</div><p>Слов написано на слух без ошибок (или почти без).</p></div>' +
+        '<div class="btn-row end"><button class="ghost-btn" type="button" onclick="Practice.stop()">Готово</button><button class="save-btn" type="button" onclick="Practice.start(\'listen\')">Ещё раз</button></div>');
+      logActivity('listen', s.correct, s.list.length);
+      session = null;
+      return;
+    }
+    const e = s.list[s.idx];
+    let h = progressBar(s.idx, s.list.length);
+    h += '<div class="fc-meta"><span class="fc-dir">Диктант</span><span>' + (s.idx + 1) + ' из ' + s.list.length + '</span></div>';
+    h += '<button class="listen-big" type="button" id="listenBtn" onclick="Practice.play(0.85)" aria-label="Прослушать">🔊</button>';
+    h += '<div class="btn-row" style="justify-content:center;margin-top:6px;"><button class="ghost-btn" type="button" onclick="Practice.play(0.55)">🐢 Медленно</button></div>';
+    if(s.phase === 'ask'){
+      h += '<div class="fc-input"><input type="text" id="listenAnswer" lang="fr" autocomplete="off" autocapitalize="none" autocorrect="off" spellcheck="false" placeholder="Что вы услышали?" onkeydown="if(event.key===\'Enter\'){event.preventDefault();Practice.checkListen();}"></div>';
+      h += '<div class="btn-row end"><button class="ghost-btn" type="button" onclick="Practice.checkListen(true)">Показать</button><button class="save-btn" type="button" onclick="Practice.checkListen()">Проверить</button></div>';
+      stageShow('На слух', h);
+      if(autoplay) setTimeout(() => play(0.85), 250);
+      focusInput('listenAnswer');
+      return;
+    }
+    const r = s.result;
+    const label = r.res === 'ok' ? 'Верно' : r.res === 'almost' ? 'Почти — ' + r.why : (r.given ? 'Вы написали «' + escapeHtml(r.given) + '»' : 'Это было');
+    h += '<div class="fc-result ' + r.res + '">' + label + '<span class="ans">' + escapeHtml(e.word) + '</span></div>';
+    h += '<div class="fc-details">' + escapeHtml(e.translation) + (e.transcription ? ' <span style="opacity:0.6">[' + escapeHtml(e.transcription) + ']</span>' : '') + '</div>';
+    h += '<div class="btn-row end"><button class="save-btn" type="button" id="fcPrimary" onclick="Practice.nextListen()">Дальше</button></div>';
+    stageShow('На слух', h);
+  }
+
+  function play(rate){
+    if(!session || !session.list) return;
+    const e = session.list[session.idx];
+    const btn = $('listenBtn');
+    if(btn) btn.classList.add('playing');
+    speakFr(e.word, rate, () => { const b = $('listenBtn'); if(b) b.classList.remove('playing'); });
+  }
+
+  function checkListen(giveUp){
+    const s = session;
+    if(!s || s.phase !== 'ask') return;
+    const e = s.list[s.idx];
+    const given = giveUp ? '' : ($('listenAnswer').value || '').trim();
+    if(!giveUp && !given){ focusInput('listenAnswer'); return; }
+    const r = giveUp ? { res:'bad' } : checkFr(given, [e.word]);
+    r.given = given;
+    if(r.res !== 'bad') s.correct++;
+    s.result = r;
+    s.phase = 'answer';
+    renderListen(false);
+  }
+
+  function nextListen(){
+    if(!session) return;
+    session.idx++;
+    session.phase = 'ask';
+    renderListen(true);
+  }
+
+  // =================== 5. Пары на время ===================
+  const MATCH_PENALTY_MS = 3000;
+
+  function startMatch(){
+    const all = words();
+    if(all.length < 4){
+      stageShow('Пары на время', '<div class="empty">Нужно хотя бы 4 слова в словаре.</div>');
+      return;
+    }
+    const seen = all.filter(isSeen);
+    const pool = seen.length >= 6 ? seen : all;
+    const picked = sample(pool, Math.min(6, pool.length));
+    session = { picked, left: shuffle(picked.map((e, i) => i)), right: shuffle(picked.map((e, i) => i)),
+      sel:null, matched:0, mistakes:0, startedAt:null, finished:false };
+    renderMatch();
+  }
+
+  function shortTr(t){ const s = String(t || '').split(/[;,]/)[0].trim(); return s.length > 38 ? s.slice(0, 36) + '…' : s; }
+
+  function renderMatch(){
+    const s = session;
+    const best = state.settings.bestMatchMs;
+    let h = '<div class="match-head"><span>Ошибка = +3 с' + (best ? ' · рекорд ' + (best / 1000).toFixed(1) + ' с' : '') + '</span><span class="match-time" id="matchTime">0.0</span></div>';
+    h += '<div class="match-grid"><div class="match-col">' +
+      s.left.map(i => '<button class="match-btn fr" type="button" id="mL' + i + '" onclick="Practice.pick(\'L\',' + i + ')">' + escapeHtml(s.picked[i].word) + '</button>').join('') +
+      '</div><div class="match-col">' +
+      s.right.map(i => '<button class="match-btn" type="button" id="mR' + i + '" onclick="Practice.pick(\'R\',' + i + ')">' + escapeHtml(shortTr(s.picked[i].translation)) + '</button>').join('') +
+      '</div></div>';
+    h += '<div class="hint">Нажмите слово слева, затем его перевод справа (или наоборот). Таймер стартует с первого нажатия.</div>';
+    stageShow('Пары на время', h);
+  }
+
+  function elapsed(){
+    const s = session;
+    return s.startedAt ? (Date.now() - s.startedAt) + s.mistakes * MATCH_PENALTY_MS : 0;
+  }
+
+  function pick(side, i){
+    const s = session;
+    if(!s || s.finished) return;
+    if(!s.startedAt){
+      s.startedAt = Date.now();
+      matchTimer = setInterval(() => { const el = $('matchTime'); if(el) el.textContent = (elapsed() / 1000).toFixed(1); }, 100);
+    }
+    const el = $('m' + side + i);
+    if(!s.sel || s.sel.side === side){
+      if(s.sel){ const prev = $('m' + s.sel.side + s.sel.i); if(prev) prev.classList.remove('sel'); }
+      s.sel = { side, i };
+      el.classList.add('sel');
+      if(side === 'L') speakFr(s.picked[i].word, 1);
+      return;
+    }
+    const other = $('m' + s.sel.side + s.sel.i);
+    if(s.sel.i === i){
+      el.classList.add('gone'); other.classList.add('gone');
+      el.classList.remove('sel'); other.classList.remove('sel');
+      s.matched++;
+    } else {
+      s.mistakes++;
+      [el, other].forEach(b => { b.classList.remove('sel'); b.classList.add('wrong'); setTimeout(() => b.classList.remove('wrong'), 450); });
+    }
+    s.sel = null;
+    if(s.matched === s.picked.length) finishMatch();
+  }
+
+  async function finishMatch(){
+    const s = session;
+    s.finished = true;
+    clearInterval(matchTimer);
+    const ms = elapsed();
+    const prevBest = state.settings.bestMatchMs;
+    const data = await logActivity('match', Math.max(0, s.picked.length - s.mistakes), s.picked.length, { timeMs: ms });
+    const record = data.newRecord;
+    stageShow('Пары на время', '<div class="pr-summary"><div class="big">' + (ms / 1000).toFixed(1) + ' с</div><p>' +
+      (record ? '🏆 Новый рекорд!' + (prevBest ? ' Было ' + (prevBest / 1000).toFixed(1) + ' с.' : '') : 'Рекорд: ' + ((state.settings.bestMatchMs || ms) / 1000).toFixed(1) + ' с.') +
+      '<br>Ошибок: ' + s.mistakes + (s.mistakes ? ' (+' + (s.mistakes * 3) + ' с)' : '') + '</p></div>' +
+      '<div class="btn-row end"><button class="ghost-btn" type="button" onclick="Practice.stop()">Готово</button><button class="save-btn" type="button" onclick="Practice.start(\'match\')">Ещё раунд</button></div>');
+    session = null;
+  }
+
+  // =================== 6. Слова дня ===================
+  function pickLifeWords(exclude){
+    const all = words();
+    const recent = {};
+    for(let i = 1; i <= 7; i++){
+      (state.life[addDays(today(), -i)] || []).forEach(x => { recent[norm(x.word)] = true; });
+    }
+    (exclude || []).forEach(w => { recent[norm(w)] = true; });
+    const ok = e => !recent[norm(e.word)];
+    const learning = all.filter(e => isSeen(e) && !isLearned(e) && ok(e));
+    const others = all.filter(e => !(isSeen(e) && !isLearned(e)) && ok(e));
+    let list = sample(learning, 3);
+    if(list.length < 3) list = list.concat(sample(others, 3 - list.length));
+    if(list.length < 2) list = sample(all, Math.min(3, all.length));
+    return list.map(e => e.word);
+  }
+
+  async function renderLife(){
+    const box = $('prLife');
+    const d = today();
+    let list = state.life[d];
+    if(!list || !list.length){
+      if(words().length < 2){
+        box.innerHTML = '<div class="empty">Когда в словаре будет хотя бы пара слов, здесь каждый день будут появляться 3 слова, которые нужно применить в реальном разговоре.</div>';
+        return;
+      }
+      const picked = pickLifeWords();
+      try{
+        const data = await post('/api/practice/life', { words: picked });
+        list = state.life[d] = data.life;
+      }catch(e){
+        list = state.life[d] = picked.map(w => ({ word:w, done:false }));
+      }
+    }
+    drawLife();
+  }
+
+  function drawLife(){
+    const box = $('prLife');
+    const list = state.life[today()] || [];
+    const anyDone = list.some(x => x.done);
+    let total = 0;
+    Object.keys(state.life).forEach(k => (state.life[k] || []).forEach(x => { if(x.done) total++; }));
+    box.innerHTML = '<div class="hint" style="margin:-6px 0 6px;">Используйте эти слова сегодня в разговоре, сообщении или вслух — и отметьте.</div>' +
+      list.map((x, i) => {
+        const e = findDictionaryEntry(x.word);
+        return '<label class="life-item' + (x.done ? ' done' : '') + '">' +
+          '<input type="checkbox"' + (x.done ? ' checked' : '') + ' onchange="Practice.toggleLife(' + i + ', this.checked)">' +
+          '<span class="txt"><span class="w">' + escapeHtml(x.word) + '</span> <span class="tr">— ' + escapeHtml(e ? e.translation : '') + '</span></span>' +
+          speakBtn(x.word) + '</label>';
+      }).join('') +
+      '<div class="btn-row" style="justify-content:space-between;"><span class="hint" style="margin:0;">Применено всего: ' + total + '</span>' +
+      '<button class="ghost-btn" type="button" onclick="Practice.rerollLife()"' + (anyDone ? ' disabled title="Уже есть отмеченные слова"' : '') + '>Другие слова</button></div>';
+  }
+
+  async function toggleLife(i, done){
+    const list = state.life[today()] || [];
+    if(!list[i]) return;
+    list[i].done = done;
+    drawLife();
+    try{ await post('/api/practice/life/toggle', { word:list[i].word, done }); }
+    catch(e){ showToast('Не сохранилось — нет связи', true); }
+    if(done && list.every(x => x.done)) showToast('Все слова дня применены 🎉');
+  }
+
+  async function rerollLife(){
+    const d = today();
+    const current = (state.life[d] || []).map(x => x.word);
+    const picked = pickLifeWords(current);
+    try{
+      const data = await post('/api/practice/life', { words: picked });
+      state.life[d] = data.life;
+    }catch(e){ showToast('Не сохранилось — нет связи', true); return; }
+    drawLife();
+  }
+
+  // ---------- настройки ----------
+  async function setNewPerDay(v){
+    try{
+      const data = await post('/api/practice/settings', { newPerDay: parseInt(v, 10) });
+      state.settings = data.settings;
+      renderStats(); renderModes();
+      showToast('Сохранено ✓');
+    }catch(e){ showToast('Не сохранилось', true); }
+  }
+  function setAutoSpeak(on){
+    autoSpeak = !!on;
+    try{ localStorage.setItem('dt_auto_speak', on ? '1' : '0'); }catch(e){}
+  }
+
+  // Enter на экране ответа = главная кнопка; 1/2/3 — оценки в карточках
+  document.addEventListener('keydown', ev => {
+    if(!mode || !session || ev.target.tagName === 'INPUT' || ev.target.tagName === 'SELECT' || ev.target.tagName === 'TEXTAREA') return;
+    if(!$('frenchSub-train').classList.contains('active')) return;
+    if(ev.key === 'Enter'){ const b = $('fcPrimary'); if(b){ ev.preventDefault(); b.click(); } return; }
+    if(mode === 'cards' && session && session.queue && session.phase === 'answer' && session.queue[session.idx] && !session.queue[session.idx].repeat){
+      const map = session.result.res === 'bad' ? { '1':'again', '2':'hard' } : { '1':'hard', '2':'good', '3':'easy' };
+      if(map[ev.key]) grade(map[ev.key]);
+    }
+  });
+
+  return {
+    open, start, stop,
+    checkCard, grade,
+    generateText, setTextView: v => { textView = v; renderTextArea(); }, checkCloze, speakText, rerenderText: () => { if(textView === 'read') renderTextReading(); },
+    checkConj, nextConj, toggleTense,
+    play, checkListen, nextListen,
+    pick,
+    toggleLife, rerollLife,
+    setNewPerDay, setAutoSpeak,
+  };
+})();
+
 
 loadDictionary().then(() => loadSavedFrenchText('A2'));
 loadSavedTopics();
